@@ -51,14 +51,14 @@ class DBUtility(object):
             logger.debug(f"Executing: {sql}")
             cur = conn.cursor(pymysql.cursors.DictCursor)
             cur.execute(sql)
-            rs_dict = cur.fetchall()
+            res_dict = cur.fetchall()
             cur.close()
         except Exception as e:
             raise Exception(f"Failed running sql: {sql} \n  Error: {str(e)}")
         finally:
             conn.close()
 
-        return rs_dict
+        return res_dict
 
 
 

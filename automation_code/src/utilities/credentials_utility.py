@@ -9,7 +9,6 @@ class CredentialsUtility(object):
     def get_wc_api_keys():
 
         wc_key = os.environ.get('WC_KEY')
-        print(wc_key)
         wc_secret = os.environ.get('WC_SECRET')
 
         if not wc_key or not wc_secret:

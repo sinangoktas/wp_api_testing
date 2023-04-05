@@ -1,9 +1,9 @@
 import logging as logger
-
 import pytest
-
 from automation_code.src.utilities import generic_utility
 from automation_code.src.helpers.customers_helper import CustomerHelper
+
+import pdb
 
 @pytest.mark.tcid01
 def test_create_customer_only_email_password():
@@ -15,12 +15,12 @@ def test_create_customer_only_email_password():
     password = user_info['password']
 
     # make the call
-    cust_obj = CustomerHelper()
-    cust_api_info = cust_obj.create_customer(email=email, password=password)
+    customer_obj = CustomerHelper()
+    customer_api_info = customer_obj.create_customer(email=email, password=password)
 
     # verify email and first name in the response
-    assert cust_api_info['email'] == email, f"Create customer api return wrong email. Email: {email}"
-    assert cust_api_info['first_name'] == '', f"Create customer api returned value for first_name" \
+    assert customer_api_info['email'] == email, f"Create customer api return wrong email. Email: {email}"
+    assert customer_api_info['first_name'] == '', f"Create customer api returned value for first_name" \
                                               f"but it should be empty. "
 
     # # verify customer is created in database

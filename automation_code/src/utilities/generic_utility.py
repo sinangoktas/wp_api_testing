@@ -6,9 +6,9 @@ def generate_random_email_and_password(domain=None, email_prefix=None):
     logger.debug("Generating random email and password.")
 
     if not domain:
-        domain = 'sinang.com'
+        domain = 'sigsolutions.com'
     if not email_prefix:
-        email_prefix = 'test_user'
+        email_prefix = 't_u'
 
     email_length = 5
     email = email_prefix + '_' +\
