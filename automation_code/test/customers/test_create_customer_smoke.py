@@ -21,7 +21,7 @@ def test_create_customer_only_email_password():
     # verify email and first name in the response
     assert cust_api_info['email'] == email, f"Create customer api return wrong email. Email: {email}"
     assert cust_api_info['first_name'] == '', f"Create customer api returned value for first_name" \
-                                              f"but it should be empty."
+                                              f"but it should be empty. "
 
     # # verify customer is created in database
     # cust_dao = CustomersDAO()
