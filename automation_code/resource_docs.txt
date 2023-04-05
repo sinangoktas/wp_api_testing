@@ -4,4 +4,17 @@
 # http://wordpress.local/rest-api/docs/#/
 # swagger ui can be opened from wp admin ui
 
-# https://woocommerce.github.io/woocommerce-rest-api-docs/?python#list-all-products
+# https://woocommerce.github.io/woocommerce-rest-api-docs/
+
+
+===========================================
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+IMPL PYTEST FEATURES INCL MOCKING
+IMPL FEW INTEGRATION SCENARIOS
+IMPL DOCKERIZATION
+IMPL PYTEST REPORTING - EXTRACT FROM DOCKER
+IMPL DISABLE DB VALIDATIONS FOR DOCKER RUN
+IMPL LOCUST PERFORMANCE EVAL
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
