@@ -1,8 +1,6 @@
 export MACHINE=local
 export WP_HOST=local
-
 export WC_KEY=ck_e54558dc70d369b16d877a7f4e2473774861745e
 export WC_SECRET=cs_95533b20c9bb04ff1d993a4dbe19129813f3f119
-
 export DB_USER=root
 export DB_PASSWORD=root
