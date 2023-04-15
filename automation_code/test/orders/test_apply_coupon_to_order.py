@@ -2,7 +2,6 @@ from automation_code.src.helpers.orders_helper import OrdersHelper
 from automation_code.src.helpers.products_helper import ProductsHelper
 import pytest
 import random
-import pdb
 
 @pytest.fixture(scope='module')
 def my_setup_teardown():
@@ -23,7 +22,7 @@ def my_setup_teardown():
 
     return info
 
-
+# TODO Failing ....Investigate
 @pytest.mark.tcid20
 def test_apply_valid_coupon_to_order(my_setup_teardown):
     """
@@ -40,23 +39,13 @@ def test_apply_valid_coupon_to_order(my_setup_teardown):
         "shipping_lines": [{"method_id": "flat_rate", "method_title": "Flat Rate", "total": "0.00"}]
         }
 
-    try:
-        res_order = order_helper.create_order(additional_args=order_payload_addition)
-    except AssertionError:
-        print("Coupon is not valid .... ")
+    res_order = order_helper.create_order(additional_args=order_payload_addition)
 
-    # TODO Something wrong here with applying te coupon  .... Investigate
+    # calculate expected total price based on coupon and product price
+    expected_total = float(my_setup_teardown['product_price']) * (float(my_setup_teardown['discount_pct'])/100)
 
-    # res_order = order_helper.create_order(additional_args=order_payload_addition)
-    #
-    # pdb.set_trace()
-    #
-    #
-    # # calculate expected total price based on coupon and product price
-    # expected_total = float(my_setup_teardown['product_price']) * (float(my_setup_teardown['discount_pct'])/100)
-    #
-    # # get total from order response and verify
-    # total = round(float(res_order['total']), 2)
-    # expected_total = round(expected_total, 2)
-    #
-    # assert total == expected_total, f"Order total is not reduced after applying 50% coupon. Expected cost: {expected_total}, Actual: {total}"
+    # get total from order response and verify
+    total = round(float(res_order['total']), 2)
+    expected_total = round(expected_total, 2)
+
+    assert total == expected_total, f"Order total is not reduced after applying 50% coupon. Expected cost: {expected_total}, Actual: {total}"

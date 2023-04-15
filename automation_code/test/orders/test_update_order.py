@@ -1,7 +1,7 @@
-import pytest
 from automation_code.src.helpers.orders_helper import OrdersHelper
 from automation_code.src.utilities.requests_utility import RequestsUtility
 from automation_code.src.utilities.generic_utility import generate_random_string
+import pytest
 
 pytest_mark = [pytest.mark.orders, pytest.mark.regression]
 

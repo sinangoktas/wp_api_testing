@@ -6,13 +6,13 @@ from automation_code.src.dao.products_dao import ProductsDAO
 from automation_code.src.helpers.products_helper import ProductsHelper
 from automation_code.src.utilities.generic_utility import generate_random_string
 
-
 @pytest.mark.products_smoke
 @pytest.mark.tcid04
 def test_get_all_products():
     req_utility = RequestsUtility()
     res_api = req_utility.get(endpoint='products')
     assert res_api, f"Get all products end point returned nothing."
+
 
 
 @pytest.mark.products_smoke
@@ -32,6 +32,7 @@ def test_get_product_by_id():
     # verify the response
     assert db_name == api_name, f"Get product by id returned wrong product. Id: {rand_product_id}" \
                                 f"Db name: {db_name}, Api name: {api_name}"
+
 
 @pytest.mark.products_smoke
 @pytest.mark.tcid06

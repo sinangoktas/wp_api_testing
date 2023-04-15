@@ -34,10 +34,10 @@ def generate_random_string(length=10, prefix=None, suffix=None):
 
     return random_string
 
-def generate_random_coupon_code(sufix=None, length=10):
+def generate_random_coupon_code(suffix=None, length=10):
 
     code = ''.join(random.choices(string.ascii_uppercase, k=length))
-    if sufix:
-        code += sufix
+    if suffix:
+        code += suffix
 
     return code

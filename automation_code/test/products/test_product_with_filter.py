@@ -1,8 +1,8 @@
 import pytest
-import pdb
 from datetime import datetime, timedelta
 from automation_code.src.dao.products_dao import ProductsDAO
 from automation_code.src.helpers.products_helper import ProductsHelper
+
 
 @pytest.mark.regression
 @pytest.mark.tcid07

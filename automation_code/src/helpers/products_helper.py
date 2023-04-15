@@ -1,7 +1,6 @@
 import logging as logger
 from automation_code.src.utilities.requests_utility import RequestsUtility
 
-
 class ProductsHelper(object):
 
     def __init__(self):

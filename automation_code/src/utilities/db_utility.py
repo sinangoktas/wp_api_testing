@@ -1,8 +1,8 @@
+from automation_code.src.utilities.credentials_utility import CredentialsUtility
+from automation_code.src.configs.hosts_config import DB_HOST
 import pymysql
 import os
 import logging as logger
-from automation_code.src.utilities.credentials_utility import CredentialsUtility
-from automation_code.src.configs.hosts_config import DB_HOST
 
 class DBUtility(object):
 
@@ -59,7 +59,6 @@ class DBUtility(object):
             conn.close()
 
         return res_dict
-
 
 
     def execute_sql(self, sql):

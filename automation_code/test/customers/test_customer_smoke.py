@@ -1,10 +1,10 @@
 import pytest
-import pdb
 import logging as logger
 from automation_code.src.utilities import generic_utility
 from automation_code.src.helpers.customers_helper import CustomerHelper
 from automation_code.src.dao.customers_dao import CustomersDAO
 from automation_code.src.utilities.requests_utility import RequestsUtility
+
 
 @pytest.mark.customers_smoke
 @pytest.mark.tcid01
@@ -34,6 +34,7 @@ def test_create_customer_only_email_password():
     assert id_in_api == id_in_db, f'Create customer response "id" not same as "ID" in database.' \
                                   f'Email: {email}'
 
+
 @pytest.mark.customers_smoke
 @pytest.mark.tcid02
 def test_get_all_customers():
@@ -42,6 +43,7 @@ def test_get_all_customers():
     res_api = req_utility.get('customers')
 
     assert res_api, f"Response of list all customers is empty."
+
 
 
 @pytest.mark.customers_smoke

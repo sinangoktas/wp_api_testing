@@ -1,5 +1,3 @@
-import pdb
-
 from automation_code.src.configs.hosts_config import API_HOSTS
 from automation_code.src.utilities.credentials_utility import CredentialsUtility
 
