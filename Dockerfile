@@ -1,3 +1,5 @@
+# Can not connect to db (Local's in-build mysql) from docker
+# Therefore dockerizing this app for now is on hold
 FROM python:latest
 
 MAINTAINER sinang@somemail.com

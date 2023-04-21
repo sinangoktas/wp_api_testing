@@ -16,8 +16,9 @@ class DBUtility(object):
         self.wp_host = os.environ.get('WP_HOST')
         assert self.wp_host, f"Environment variable 'WP_HOST' must be set."
 
-        if self.machine == 'docker' and self.wp_host == 'local':
-            raise Exception(f"Can not run test in docker if WP_HOST=local")
+        # Looks like we can not connect to db(our db built in Local) from docker
+        if self.machine == 'docker' and self.wp_host == 'Local':
+            raise Exception(f"Can not run test in docker if WP_HOST=Local")
 
         self.env = os.environ.get('ENV', 'test')
 
@@ -29,7 +30,7 @@ class DBUtility(object):
 
     def create_connection(self):
 
-        if self.wp_host == 'local':
+        if self.wp_host == 'Local':
             connection = pymysql.connect(host=self.host, user=self.creds['db_user'],
                                          password=self.creds['db_password'],
                                          unix_socket=self.socket)

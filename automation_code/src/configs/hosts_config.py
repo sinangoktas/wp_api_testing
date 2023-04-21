@@ -5,7 +5,7 @@ API_HOSTS = {
 }
 
 DB_HOST = {
-    'local': {
+    'machine1': {
               "test": {"host": "localhost",
                        "database": "local",
                        "table_prefix": "wp_",
@@ -27,30 +27,7 @@ DB_HOST = {
                   "port": 3306
               }
             },
-    'docker': {
-        "test": {
-            "host": "host.docker.internal",
-            "database": "wp398",
-            "table_prefix": "wp2p_",
-            "socket": None,
-            "port": 3306
-        },
-        "dev": {
-            "host": "host.docker.internal",
-            "database": "local",
-            "table_prefix": "wp_",
-            "socket": None,
-            "port": 3306
-        },
-        "prod": {
-            "host": "host.docker.internal",
-            "database": "local",
-            "table_prefix": "wp_",
-            "socket": None,
-            "port": 3306
-        },
-    },
-    'local2': {
+    'machine2': {
               "test": {"host": "localhost",
                        "database": "local",
                        "table_prefix": "wp_",
