@@ -6,8 +6,15 @@ from automation_code.src.dao.customers_dao import CustomersDAO
 from automation_code.src.utilities.requests_utility import RequestsUtility
 
 
-@pytest.mark.customers_smoke
-@pytest.mark.tcid01
+@pytest.smoke
+def test_retrieve_all_customers():
+    req_utility = RequestsUtility()
+    res_api = req_utility.get('customers')
+
+    assert res_api, f"Response of list all customers is empty."
+
+
+@pytest.mark.smoke
 def test_create_customer_only_email_password():
 
     logger.info("TEST: Create new customer with email and password only.")
@@ -38,20 +45,20 @@ def test_create_customer_only_email_password():
                                   f'Email: {email}'
 
 
-@pytest.mark.customers_smoke
-@pytest.mark.tcid02
-def test_get_all_customers():
+@pytest.mark.smoke
+def test_retrieve_customer_by_id():
 
-    req_utility = RequestsUtility()
-    res_api = req_utility.get('customers')
+    # retrieve a customer from db
 
-    assert res_api, f"Response of list all customers is empty."
+    # retrieve the customer from api
+
+    # verify that details match
+
+    pass
 
 
-
-@pytest.mark.customers_smoke
-@pytest.mark.tcid03
-def test_create_customer_fail_for_existing_email():
+@pytest.mark.regression
+def test_create_customer_fails_existing_email():
 
     # get existing email from db
     customer_dao = CustomersDAO()
