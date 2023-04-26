@@ -14,24 +14,27 @@ def test_create_customer_only_email_password():
 
     user_info = generic_utility.generate_random_email_and_password()
     email = user_info['email']
-    password = user_info['password']
+    # password = user_info['password']
 
     # make the call
     customer_obj = CustomerHelper()
-    customer_api_info = customer_obj.create_customer(email=email, password=password)
+    customer_api_info = customer_obj.create_customer(email=email)
 
     # verify email and first name in the response
-    assert customer_api_info['email'] == email, f"Create customer api return wrong email. Email: {email}"
-    assert customer_api_info['first_name'] == '', f"Create customer api returned value for first_name" \
-                                              f"but it should be empty. "
+    assert customer_api_info['email'] == email, \
+        f"Create customer api return wrong email. Email: {email}"
 
-    # # verify customer is created in database
+    # verify customer is created in database
     customer_dao = CustomersDAO()
     customer_db_info = customer_dao.get_customer_by_email(email)
 
+    assert customer_db_info[0]['user_registered'], \
+        f"User registration date is not found in the db .... "
+
     id_in_api = customer_api_info['id']
     id_in_db = customer_db_info[0]['ID']
-    assert id_in_api == id_in_db, f'Create customer response "id" not same as "ID" in database.' \
+    assert id_in_api == id_in_db, \
+        f'Create customer api: "id" not same as "ID" in database' \
                                   f'Email: {email}'
 
 

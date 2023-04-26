@@ -1,0 +1,2 @@
+Verify that you can create a new customer using the API, and the customer details are correctly stored in the WordPress database.
+Verify that you can retrieve the details of an existing customer using the API, and the retrieved details match the details stored in the WordPress database.
