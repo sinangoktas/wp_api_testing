@@ -22,7 +22,18 @@ class CustomerHelper(object):
 
         return create_user_json
 
+
     def get_customer_by_id(self, id):
 
         customer_api_res = self.requests_utility.get(f'customers/{id}', expected_status_code=200)
         return customer_api_res
+
+
+    def update_customer_details(self, id, **kwargs):
+
+        payload = dict()
+        payload.update(kwargs)
+
+        update_customer_json = self.requests_utility.put(f'customers/{id}', payload=payload, expected_status_code=200)
+
+        return update_customer_json

@@ -24,7 +24,7 @@ def test_create_customer_only_email_password():
     email = user_info['email']
     # password = user_info['password']
 
-    # make the call
+    # make the api call to create a customer
     customer_obj = CustomerHelper()
     customer_api_info = customer_obj.create_customer(email=email)
 
@@ -64,6 +64,7 @@ def test_retrieve_customer_by_id():
 
 
 @pytest.mark.regression
+@pytest.mark.test112
 def test_create_customer_fails_existing_email():
 
     # get existing email from db
@@ -71,14 +72,15 @@ def test_create_customer_fails_existing_email():
     existing_cust = customer_dao.get_random_customer_from_db()
     existing_email = existing_cust[0]['user_email']
 
-    # call the api
+    # make the api call to create a customer with an existing email
     req_utility = RequestsUtility()
     payload = {"email": existing_email, "password": "Password1"}
     customer_api = req_utility.post(endpoint='customers', payload=payload, expected_status_code=400)
 
-    assert customer_api['code'] == 'registration-error-email-exists', f"Create customer with" \
-       f"existing user error 'code' is not correct. Expected: 'registration-error-email-exists', " \
-        f"Actual: {customer_api['code']}"
+    # verify the error code
+    assert customer_api['code'] == 'registration-error-email-exists', \
+            f"Expected error code: 'registration-error-email-exists', " \
+                f"Actual: {customer_api['code']}"
 
 
 @pytest.mark.regression
@@ -86,6 +88,16 @@ def test_create_customer_fails_existing_email():
 def test_update_customer_details():
 
     # retrieve a customer from db
+    customer_dao = CustomersDAO()
+    existing_customer = customer_dao.get_random_customer_from_db()
+    customer_id = existing_customer[0]['ID']
+
     # update the customer details using api
+    customer_helper = CustomerHelper()
+    customer_helper.update_customer_details(customer_id, first_name='SinanG')
+
     # verify that changes reflected in db
-    pass
+
+    customer_details_db = customer_dao.get_customer_by_id(customer_id)
+    customer_first_name = customer_details_db[0]['first_name']
+    assert customer_first_name == 'SinanG'
