@@ -118,4 +118,5 @@ def test_delete_an_existing_customer():
     # retrieve a customer from users table
     # delete the customer using api
     # verify the deletion using api and also in db
+    pass
 
