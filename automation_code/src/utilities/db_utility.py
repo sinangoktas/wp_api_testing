@@ -28,6 +28,7 @@ class DBUtility(object):
         self.database = DB_HOST[self.machine][self.env]['database']
         self.table_prefix = DB_HOST[self.machine][self.env]['table_prefix']
 
+
     def create_connection(self):
 
         if self.wp_host == 'Local':
@@ -39,7 +40,7 @@ class DBUtility(object):
                                          password=self.creds['db_password'],
                                          port=self.port)
         else:
-            raise Exception("Unknown WP_HOST.")
+            raise Exception("Unknown WP_HOST...")
 
         return connection
 

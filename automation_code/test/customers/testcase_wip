@@ -1,2 +1,10 @@
-Verify that you can create a new customer using the API, and the customer details are correctly stored in the WordPress database.
-Verify that you can retrieve the details of an existing customer using the API, and the retrieved details match the details stored in the WordPress database.
+    1. Verify that you can create a new customer using the API, and the customer details are correctly stored in the WordPress database.
+    2. Verify that you can retrieve the details of an existing customer using the API, and the retrieved details match the details stored in the WordPress database.
+    3. Verify that you can update the details of an existing customer using the API, and the updated details are correctly reflected in the WordPress database.
+    4. Verify that you can delete an existing customer using the API, and the customer is removed from the WordPress database.
+    5. Verify that you can retrieve a list of all customers using the API, and the retrieved list matches the customers stored in the WordPress database.
+    6. Verify that you can search for a customer by email address using the API, and the retrieved customer matches the customer with the specified email address in the WordPress database.
+    7. Verify that you can search for a customer by name using the API, and the retrieved customer matches the customer with the specified name in the WordPress database.
+    8. Verify that you can search for a customer by ID using the API, and the retrieved customer matches the customer with the specified ID in the WordPress database.
+    9. Verify that you can retrieve the orders for a specific customer using the API, and the retrieved orders match the orders associated with the specified customer in the WordPress database.
+    10. Verify that you can add a note to an existing customer using the API, and the note is correctly stored in the WordPress database associated with the customer.

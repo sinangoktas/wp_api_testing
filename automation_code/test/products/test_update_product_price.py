@@ -64,7 +64,7 @@ def test_update_regular_price_should_update_price():
                                               f"but expected: {new_price}"
 
 
-# TODO Failing ....Investigate
+# TODO Failing ....Investigate   > chaeck the dao select statement!!
 @pytest.mark.tcid22
 def test_adding_sale_price_should_set_on_sale_flag_true():
     """

@@ -8,7 +8,7 @@ DB_HOST = {
     'machine1': {
               "test": {"host": "localhost",
                        "database": "local",
-                       "table_prefix": "wp_",
+                       "table_prefix": "wp",
                        "socket": "/home/sinangoktas/.config/Local/run/R6sTeUhet/mysql/mysqld.sock",
                        "port": 3306
                        },
@@ -30,7 +30,7 @@ DB_HOST = {
     'machine2': {
               "test": {"host": "localhost",
                        "database": "local",
-                       "table_prefix": "wp_",
+                       "table_prefix": "wp",
                        "socket": "/home/sinangoktas/.config/Local/run/R6sTeUhet/mysql/mysqld.sock",
                        "port": 3306
                        },
