@@ -1,5 +1,8 @@
+import string
+
 import pytest
 import logging as logger
+import random
 import pdb
 from automation_code.src.utilities import generic_utility
 from automation_code.src.helpers.customers_helper import CustomerHelper
@@ -64,7 +67,7 @@ def test_retrieve_customer_by_id():
 
 
 @pytest.mark.regression
-@pytest.mark.test112
+# @pytest.mark.test112
 def test_create_customer_fails_existing_email():
 
     # get existing email from db
@@ -84,20 +87,28 @@ def test_create_customer_fails_existing_email():
 
 
 @pytest.mark.regression
-@pytest.mark.test112
 def test_update_customer_details():
 
-    # retrieve a customer from db
+    # retrieve a customer from users table
     customer_dao = CustomersDAO()
     existing_customer = customer_dao.get_random_customer_from_db()
     customer_id = existing_customer[0]['ID']
 
+    # get the users first_name in customer_lookup table
+    customer_db_before = customer_dao.get_customer_by_id(customer_id)
+    first_name_before = customer_db_before[0]['first_name']
+    pdb.set_trace()
+
     # update the customer details using api
     customer_helper = CustomerHelper()
-    customer_helper.update_customer_details(customer_id, first_name='SinanG')
+    rnd_first_name = ''.join(random.choices(string.ascii_lowercase, k=10))
+    customer_helper.update_customer_details(customer_id, first_name=rnd_first_name)
+
+    # get the users first_name in customer_lookup table again
+    customer_db_after = customer_dao.get_customer_by_id(customer_id)
+    first_name_after = customer_db_after[0]['first_name']
+    pdb.set_trace()
 
     # verify that changes reflected in db
-
-    customer_details_db = customer_dao.get_customer_by_id(customer_id)
-    customer_first_name = customer_details_db[0]['first_name']
-    assert customer_first_name == 'SinanG'
+    assert first_name_after == rnd_first_name
+    assert first_name_before != first_name_after

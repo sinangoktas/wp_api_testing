@@ -30,7 +30,7 @@ class CustomersDAO(object):
     def get_customer_by_id(self, id):
 
         sql = f'''SELECT * FROM {self.db_helper.database}.{self.db_helper.table_prefix}_wc_customer_lookup 
-                  WHERE customer_id = '{id}';'''
+                  WHERE user_id = '{id}';'''
 
         res_sql = self.db_helper.execute_select(sql)
         return res_sql
