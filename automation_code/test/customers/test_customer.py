@@ -112,3 +112,10 @@ def test_update_customer_details():
     # verify that changes reflected in db
     assert first_name_after == rnd_first_name
     assert first_name_before != first_name_after
+
+def test_delete_an_existing_customer():
+
+    # retrieve a customer from users table
+    # delete the customer using api
+    # verify the deletion using api and also in db
+
