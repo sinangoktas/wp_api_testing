@@ -18,10 +18,10 @@ def my_setup():
 
 @pytest.mark.parametrize("discount_type",
                          [
-                             pytest.param(None, marks=[pytest.mark.tcid15, pytest.mark.smoke]),
-                             pytest.param('percent', marks=[pytest.mark.tcid16, pytest.mark.smoke]),
-                             pytest.param('fixed_product', marks=pytest.mark.tcid17),
-                             pytest.param('fixed_cart', marks=pytest.mark.tcid18),
+                             pytest.param(None, marks=[pytest.mark.tcid_c1, pytest.mark.smoke]),
+                             pytest.param('percent', marks=[pytest.mark.tcid_c2, pytest.mark.regression]),
+                             pytest.param('fixed_product', marks=[pytest.mark.tcid_c3, pytest.mark.regression]),
+                             pytest.param('fixed_cart', marks=[pytest.mark.tcid_c4, pytest.mark.regression]),
                          ])
 def test_create_coupon_percent_discount_type(my_setup, discount_type):
     """
@@ -30,11 +30,12 @@ def test_create_coupon_percent_discount_type(my_setup, discount_type):
 
     logger.info("Testing create coupon api for 50% off coupon.")
 
-    # one of the tests is for not sending discount type and verify the default is used, is if None is given check for default
+    # one of the tests is for not sending discount type and verify the default is used,
+    # is if None is given check for default
     expected_discount_type = discount_type if discount_type else 'fixed_cart'
 
     pct_off = str(random.randint(50, 90)) + ".00"
-    coupon_code = generate_random_coupon_code(suffix="tcid16", length=5)
+    coupon_code = generate_random_coupon_code(suffix="tcid_c2", length=5)
 
     # get the helper object
     coupon_helper = my_setup['coupon_helper']
@@ -61,7 +62,8 @@ def test_create_coupon_percent_discount_type(my_setup, discount_type):
                                                            f"Expected: {expected_discount_type}, Actual: {res_coupon_retrieve['discount_type']}."
 
 
-@pytest.mark.tcid19
+@pytest.mark.tcid_c5
+@pytest.mark.regression
 def test_create_coupon_with_invalid_discount_type():
     """
     Verifies using a random string in 'discount_type' of create order will fail with correct error message.
@@ -71,7 +73,7 @@ def test_create_coupon_with_invalid_discount_type():
 
     # prepare data and call api
     payload = dict()
-    payload['code'] = generate_random_coupon_code(suffix="tcid19", length=5)
+    payload['code'] = generate_random_coupon_code(suffix="tcid_c5", length=5)
     payload['amount'] = str(random.randint(50, 90)) + ".00"
     payload['discount_type'] = generate_random_string()
     res_coupon = RequestsUtility().post('coupons', payload=payload, expected_status_code=400)
@@ -79,4 +81,4 @@ def test_create_coupon_with_invalid_discount_type():
     assert res_coupon['code'] == 'rest_invalid_param', f"Crete coupon with invalid 'discount_type' " \
                                                       f"returned 'code={res_coupon['code']}', Expected code = 'rest_invalid_param' "
     assert res_coupon['message'] == 'Invalid parameter(s): discount_type', f"Crete coupon with invalid 'discount_type' " \
-                                                                          f"returned 'message={res_coupon['message']}', Expected message = 'Invalid parameter(s): discount_type',"
+                                                     f"returned 'message={res_coupon['message']}', Expected message = 'Invalid parameter(s): discount_type',"

@@ -67,7 +67,6 @@ def test_retrieve_customer_by_id():
 
 
 @pytest.mark.regression
-# @pytest.mark.test112
 def test_create_customer_fails_existing_email():
 
     # get existing email from db
@@ -102,7 +101,7 @@ def test_update_customer_details():
     # update the customer details using api
     customer_helper = CustomerHelper()
     rnd_first_name = ''.join(random.choices(string.ascii_lowercase, k=10))
-    customer_helper.update_customer_details(customer_id, first_name=rnd_first_name)
+    customer_helper.update_customer(customer_id, first_name=rnd_first_name)
 
     # get the users first_name in customer_lookup table again
     customer_db_after = customer_dao.get_customer_by_id(customer_id)
@@ -113,10 +112,22 @@ def test_update_customer_details():
     assert first_name_after == rnd_first_name
     assert first_name_before != first_name_after
 
+@pytest.mark.regression
+@pytest.mark.skip
 def test_delete_an_existing_customer():
 
-    # retrieve a customer from users table
+    # create a customer so to delete
+    customer_helper = CustomerHelper()
+    customer = customer_helper.create_customer()
+    customer_id = customer['id']
+
+    # This block is not working. Change the response code and see the error message of ....
+    """
+    Response Json: {'code': 'woocommerce_rest_trash_not_supported', 'message': 'Customers do not support trashing.'
+    """
     # delete the customer using api
+    customer_helper.delete_customer(customer_id, expected_status_code=501)
+
     # verify the deletion using api and also in db
-    pass
+
 

@@ -1,3 +1,6 @@
+import base64
+import pdb
+
 from automation_code.src.configs.hosts_config import API_HOSTS
 from automation_code.src.utilities.credentials_utility import CredentialsUtility
 
@@ -6,6 +9,7 @@ import os
 import json
 from requests_oauthlib import OAuth1
 import logging as logger
+
 
 class RequestsUtility(object):
 
@@ -21,8 +25,8 @@ class RequestsUtility(object):
 
     def assert_status_code(self):
         assert self.status_code == self.expected_status_code, f"Bad Status code." \
-          f"Expected {self.expected_status_code}, Actual status code: {self.status_code}," \
-          f"URL: {self.url}, Response Json: {self.res_json}"
+                                                              f"Expected {self.expected_status_code}, Actual status code: {self.status_code}," \
+                                                              f"URL: {self.url}, Response Json: {self.res_json}"
 
     def get(self, endpoint, payload=None, headers=None, expected_status_code=200):
 
@@ -74,4 +78,18 @@ class RequestsUtility(object):
         return self.res_json
 
 
+    def delete(self, endpoint, headers=None, expected_status_code=None):
 
+        if not headers:
+            headers = {"Content-Type": "application/json"}
+
+        self.url = self.base_url + endpoint
+        res_api = requests.delete(url=self.url, headers=headers)
+        self.status_code = res_api.status_code
+        self.expected_status_code = expected_status_code
+        self.res_json = res_api.json()
+        self.assert_status_code()
+
+        logger.debug(f"DELETE API response: {self.res_json}")
+
+        return self.res_json

@@ -1,3 +1,5 @@
+import pdb
+
 from automation_code.src.utilities.requests_utility import RequestsUtility
 from automation_code.src.dao.orders_dao import OrdersDAO
 import os
@@ -12,16 +14,15 @@ class OrdersHelper(object):
     def create_order(self, additional_args=None):
 
         payload_template = os.path.join(self.cur_file_dir, '..', 'data', 'create_order_payload.json')
-        # NOTE: in the data (create_order_payload.json) verify the product id used exists.   "line_items": [{"product_id": 12,"quantity": 1}
-        # If the product does not exist you will get 'completed' as the default status of the order when created. The default should be 'processing'
-        # if the product is valid.
+        # NOTE: In the data (create_order_payload.json) verify the product id used exists.   "line_items": [{"product_id": 12,"quantity": 1}
+        # If the product does not exist you will get 'completed' status for order when created. The default should be 'processing' if the product is valid.
 
         with open(payload_template) as f:
             payload = json.load(f)
 
-        # if user adds more info to payload, then update it
+        # If user adds more info to payload, then update it
         if additional_args:
-            assert isinstance(additional_args, dict), f"Parameter 'additional_args' must be a dictionary but found {type(additional_args)}"
+            assert isinstance(additional_args, dict), "Parameter 'additional_args' must be a dictionary"
             payload.update(additional_args)
 
         res_api = self.requests_utility.post('orders', payload=payload, expected_status_code=201)
@@ -32,16 +33,16 @@ class OrdersHelper(object):
     def verify_order_is_created(order_json, exp_cust_id, exp_products):
         orders_dao = OrdersDAO()
 
-        # verify response
+        # Verify in API response
         assert order_json, f"Create order response is empty."
-        assert order_json['customer_id'] == exp_cust_id, f"Create order with given custoemr id returned" \
-                                                         f"bad customer id.Expected customer_id={exp_cust_id} but got '{order_json['customer_id']}'"
+        assert order_json['customer_id'] == exp_cust_id, f"Create order with given customer id... \
+                                Expected customer_id: {exp_cust_id} Actual:  '{order_json['customer_id']}'"
 
-        assert len(order_json['line_items']) == len(exp_products), f"Expected only {len(exp_products)} item in order but " \
-                                                   f"found '{len(order_json['line_items'])}'" \
+        assert len(order_json['line_items']) == len(exp_products), f"Expected {len(exp_products)} item/s in order " \
+                                                   f"Actual: '{len(order_json['line_items'])}'" \
                                                    f"Order id: {order_json['id']}."
 
-        # verify db
+        # Verify in DB
         order_id = order_json['id']
         line_info = orders_dao.get_order_lines_by_order_id(order_id)
         assert line_info, f"Create order, line item not found in DB. Order id: {order_id}"
@@ -49,7 +50,7 @@ class OrdersHelper(object):
         line_items = [i for i in line_info if i['order_item_type'] == 'line_item']
         assert len(line_items) == 1, f"Expected 1 line item but found {len(line_items)}. Order id: {order_id}"
 
-        # get list of product ids in the response
+        # Get list of product ids in the response
         api_product_ids = [i['product_id'] for i in order_json['line_items']]
 
         for product in exp_products:
