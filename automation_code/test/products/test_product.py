@@ -59,16 +59,16 @@ def test_list_products_with_filter_after():
     _after_created_date = datetime.now().replace(microsecond=0) - timedelta(days=x_days_from_today)
     after_created_date = _after_created_date.isoformat()
 
-    # make the call
+    # retrieve the products applying filter
     payload = dict()
     payload['after'] = after_created_date
-    res_api = ProductsHelper().call_list_products(payload)
+    res_api = ProductsHelper().list_products(payload)
     assert res_api, f"Empty response for 'list products with filer"
 
-    # get data from db
+    # get data from db for the same filter value
     db_products = ProductsDAO().get_products_created_after_given_date(after_created_date)
 
-    # verify response match db
+    # verify that api response matches db data
     assert len(res_api) == len(db_products), f"Products count after filter applied > Expected: {len(db_products)}, Actual: {len(res_api)}"
 
     ids_in_api = [i['id'] for i in res_api]

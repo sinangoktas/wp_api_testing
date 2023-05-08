@@ -12,7 +12,7 @@ class ProductsHelper(object):
     def create_product(self, payload):
         return self.requests_utility.post('products', payload=payload, expected_status_code=201)
 
-    def call_list_products(self, payload=None):
+    def list_products(self, payload=None):
 
         max_pages = 1000
         all_products = []
