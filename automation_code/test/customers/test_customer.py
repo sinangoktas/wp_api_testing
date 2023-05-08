@@ -96,18 +96,15 @@ def test_update_customer_details():
     # get the users first_name in customer_lookup table
     customer_db_before = customer_dao.get_customer_by_id(customer_id)
     first_name_before = customer_db_before[0]['first_name']
-    pdb.set_trace()
 
     # update the customer details using api
     customer_helper = CustomerHelper()
     rnd_first_name = ''.join(random.choices(string.ascii_lowercase, k=10))
-    customer_helper.update_customer(customer_id, first_name=rnd_first_name)
+    customer_helper.update_customer(customer_id, expected_status_code=200, first_name=rnd_first_name)
 
     # get the users first_name in customer_lookup table again
     customer_db_after = customer_dao.get_customer_by_id(customer_id)
     first_name_after = customer_db_after[0]['first_name']
-    pdb.set_trace()
-
     # verify that changes reflected in db
     assert first_name_after == rnd_first_name
     assert first_name_before != first_name_after

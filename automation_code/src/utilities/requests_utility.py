@@ -61,7 +61,7 @@ class RequestsUtility(object):
 
         return self.res_json
 
-    def put(self, endpoint, payload=None, headers=None, expected_status_code=200):
+    def put(self, endpoint, payload=None, headers=None, expected_status_code=None):
 
         if not headers:
             headers = {"Content-Type": "application/json"}

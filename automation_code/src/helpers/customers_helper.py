@@ -29,13 +29,12 @@ class CustomerHelper(object):
         return customer_api_res
 
 
-    def update_customer(self, id, **kwargs):
+    def update_customer(self, id, expected_status_code, **kwargs):
 
         payload = dict()
         payload.update(kwargs)
 
-        update_customer_json = self.requests_utility.put(f'customers/{id}', payload=payload, expected_status_code=200)
-        return update_customer_json
+        return self.requests_utility.put(f'customers/{id}', payload=payload, expected_status_code=expected_status_code)
 
 
     def delete_customer(self, id, headers=None, expected_status_code=None):
