@@ -14,8 +14,10 @@ class OrdersHelper(object):
     def create_order(self, additional_args=None):
 
         payload_template = os.path.join(self.cur_file_dir, '..', 'data', 'create_order_payload.json')
-        # NOTE: In the data (create_order_payload.json) verify the product id used exists.   "line_items": [{"product_id": 12,"quantity": 1}
-        # If the product does not exist you will get 'completed' status for order when created. The default should be 'processing' if the product is valid.
+        # In the data (create_order_payload.json) verify that the product id used exists.
+        # "line_items": [{"product_id": 12,"quantity": 1}
+        # If the product does not exist you will get 'completed' status for order when created.
+        # The default should be 'processing' if the product is valid.
 
         with open(payload_template) as f:
             payload = json.load(f)
