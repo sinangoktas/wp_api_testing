@@ -6,6 +6,7 @@ from automation_code.src.dao.products_dao import ProductsDAO
 from automation_code.src.helpers.orders_helper import OrdersHelper
 from automation_code.src.helpers.customers_helper import CustomerHelper
 from automation_code.src.helpers.products_helper import ProductsHelper
+from automation_code.src.utilities.requests_utility import RequestsUtility
 from automation_code.src.utilities.generic_utility import generate_random_string
 
 @pytest.fixture(scope='module')
@@ -69,16 +70,15 @@ def test_create_paid_order_registered_customer(my_orders_smoke_setup):
     order_helper.verify_order_is_created(order_json, customer_id, expected_products)
 
 
-pytest_mark = [pytest.mark.smoke, pytest.mark.regression]
-
-
 @pytest.mark.parametrize("new_status",
                          [
                              pytest.param('cancelled', marks=[pytest.mark.tcid_u1, pytest.mark.regression]),
                              pytest.param('pending', marks=[pytest.mark.tcid_u2, pytest.mark.regression]),
                              pytest.param('on-hold', marks=[pytest.mark.tcid_u3, pytest.mark.regression]),
                          ])
+@pytest.mark.test112
 def test_update_order_status(new_status):
+
     # create a new order
     order_helper = OrdersHelper()
     order_json = order_helper.create_order()
@@ -91,8 +91,7 @@ def test_update_order_status(new_status):
 
     # update order status
     order_id = order_json['id']
-    payload = {"status": new_status}
-    order_helper.update_order(order_id, payload)
+    order_helper.update_order(order_id, status=new_status)
 
     # get order information
     new_order_info = order_helper.retrieve_order(order_id)
@@ -103,6 +102,7 @@ def test_update_order_status(new_status):
 
 
 @pytest.mark.regression
+@pytest.mark.test112x
 def test_update_order_status_to_an_invalid_value():
     new_status = 'invalid_status'
 
@@ -112,7 +112,10 @@ def test_update_order_status_to_an_invalid_value():
     order_id = order_json['id']
 
     # update the status
-    res_api = order_helper.update_order(order_id, expected_status_code=400, status=new_status)
+    # res_api = order_helper.update_order(order_id, expected_status_code=400, status=new_status)
+    payload = {"status": new_status}
+    request_utility = RequestsUtility()
+    return request_utility.put(f"orders/{order_id}", payload=payload, expected_status_code=400)
 
     assert res_api['code'] == 'rest_invalid_param', f"Code > Expected: 'rest_invalid_param' Actual: {res_api['code']}"
     assert res_api['message'] == 'Invalid parameter(s): status', f"Message > Expected: 'rest_invalid_param' Actual: {res_api['message']}"
@@ -143,7 +146,7 @@ def my_setup_teardown():
     discount_pct = '50.00'
 
     # get a random product for order
-    rand_products = ProductsHelper().call_list_products()
+    rand_products = ProductsHelper().list_products()
     rand_product = random.choice(rand_products)
 
     info = dict()

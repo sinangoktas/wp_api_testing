@@ -59,12 +59,12 @@ class OrdersHelper(object):
             assert product['product_id'] in api_product_ids, f"Create order does not have at least 1 expected product in DB." \
                                                              f"Product id: {product['product_id']}. Order id: {order_id}"
 
-    def update_order(self, order_id, expected_status_code, **kwargs):
+    def update_order(self, order_id, **kwargs):
 
         payload = dict()
         payload.update(kwargs)
 
-        return self.requests_utility.put(f'orders/{order_id}', payload=payload, expected_status_code=expected_status_code)
+        return self.requests_utility.put(f'orders/{order_id}', payload=payload)
 
     def retrieve_order(self, order_id):
         return self.requests_utility.get(f"orders/{order_id}")
