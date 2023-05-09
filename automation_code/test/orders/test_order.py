@@ -76,7 +76,6 @@ def test_create_paid_order_registered_customer(my_orders_smoke_setup):
                              pytest.param('pending', marks=[pytest.mark.tcid_u2, pytest.mark.regression]),
                              pytest.param('on-hold', marks=[pytest.mark.tcid_u3, pytest.mark.regression]),
                          ])
-@pytest.mark.test112
 def test_update_order_status(new_status):
 
     # create a new order
@@ -102,7 +101,6 @@ def test_update_order_status(new_status):
 
 
 @pytest.mark.regression
-@pytest.mark.test112x
 def test_update_order_status_to_an_invalid_value():
     new_status = 'invalid_status'
 
