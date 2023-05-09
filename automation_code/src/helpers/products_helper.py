@@ -39,8 +39,8 @@ class ProductsHelper(object):
 
         return all_products
 
-    def call_retrieve_product(self, product_id):
+    def retrieve_product(self, product_id):
         return self.requests_utility.get(f'products/{product_id}')
 
-    def call_update_product(self, product_id, payload=None):
+    def update_product(self, product_id, payload=None):
         return self.requests_utility.put(f'products/{product_id}', payload=payload)

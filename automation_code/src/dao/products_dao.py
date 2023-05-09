@@ -29,12 +29,11 @@ class ProductsDAO(object):
 
         return self.db_helper.execute_select(sql)
 
-    # LINE 35 and 44 "{self.db_helper.table_prefix} post meta" is this right?
 
     def get_random_products_that_are_not_on_sale(self, qty=1):
 
         sql = f"""SELECT * FROM {self.db_helper.database}.{self.db_helper.table_prefix}_posts WHERE post_type = 'product' AND id NOT IN 
-                    (SELECT post_id FROM {self.db_helper.database}.{self.db_helper.table_prefix} post meta WHERE `meta_key`="_sale_price");"""
+                    (SELECT post_id FROM {self.db_helper.database}.{self.db_helper.table_prefix}_postmeta WHERE `meta_key`="_sale_price");"""
 
         res_sql = self.db_helper.execute_select(sql)
 
@@ -43,7 +42,7 @@ class ProductsDAO(object):
     def get_random_products_that_are_on_sale(self, qty=1):
 
         sql = f"""SELECT * FROM {self.db_helper.database}.{self.db_helper.table_prefix}_posts WHERE post_type = 'product' AND id IN 
-                    (SELECT post_id FROM {self.db_helper.database}.{self.db_helper.table_prefix} post meta WHERE `meta_key`="_sale_price");"""
+                    (SELECT post_id FROM {self.db_helper.database}.{self.db_helper.table_prefix}_postmeta WHERE `meta_key`="_sale_price");"""
 
         res_sql = self.db_helper.execute_select(sql)
 

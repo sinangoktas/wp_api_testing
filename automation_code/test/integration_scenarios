@@ -1,5 +1,5 @@
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-INTEGRATION SCENARIOS
+INTEGRATION SCENARIOS > SOFT_CRAFT
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 Create a new product, add it to an order, and verify that the order contains the correct product information.
@@ -15,7 +15,7 @@ Add a product to the shopping cart, update the product details, and then delete 
 
 
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-Here are 15 integration scenarios between the Orders, Customers, and Products APIs of WordPress with DB Validations:
+Here are 15 integration scenarios between the Orders, Customers, and Products APIs of WordPress with DB Validations:  > PyTESTER_PRO
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
        1. Update the details of a product and verify that the details are correctly updated in the WordPress database and reflected in any existing orders containing that product.

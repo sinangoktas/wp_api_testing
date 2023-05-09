@@ -8,7 +8,6 @@ from automation_code.src.helpers.customers_helper import CustomerHelper
 from automation_code.src.helpers.products_helper import ProductsHelper
 from automation_code.src.utilities.generic_utility import generate_random_string
 
-
 @pytest.fixture(scope='module')
 def my_orders_smoke_setup():
     product_dao = ProductsDAO()
