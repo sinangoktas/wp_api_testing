@@ -27,6 +27,7 @@ def my_orders_smoke_setup():
 def test_create_paid_order_guest_user(my_orders_smoke_setup):
     order_helper = my_orders_smoke_setup['order_helper']
 
+    # User ID who owns the order. 0 for guests.
     customer_id = 0
     product_id = my_orders_smoke_setup['product_id']
 
@@ -50,7 +51,7 @@ def test_create_paid_order_registered_customer(my_orders_smoke_setup):
     order_helper = my_orders_smoke_setup['order_helper']
     customer_helper = CustomerHelper()
 
-    # make the call
+    # prepare for the order: customer and product
     cust_info = customer_helper.create_customer()
     customer_id = cust_info['id']
     product_id = my_orders_smoke_setup['product_id']
@@ -68,6 +69,7 @@ def test_create_paid_order_registered_customer(my_orders_smoke_setup):
     # # verify response
     expected_products = [{'product_id': product_id}]
     order_helper.verify_order_is_created(order_json, customer_id, expected_products)
+
 
 
 @pytest.mark.parametrize("new_status",
@@ -117,6 +119,28 @@ def test_update_order_status_to_an_invalid_value():
 
     assert res_api['code'] == 'rest_invalid_param', f"Code > Expected: 'rest_invalid_param' Actual: {res_api['code']}"
     assert res_api['message'] == 'Invalid parameter(s): status', f"Message > Expected: 'rest_invalid_param' Actual: {res_api['message']}"
+
+
+@pytest.mark.test112
+def test_create_order_with_invalid_email(my_orders_smoke_setup):
+
+    order_helper = my_orders_smoke_setup['order_helper']
+
+    # data with invalid email address
+    info = {"billing": {
+        "email": "thisIsNotAgoodEmailAdress.com"
+        }
+    }
+
+    # create the order payload
+    payload = order_helper.create_order_payload(additional_args=info)
+
+    requests_utility = RequestsUtility()
+    res_api = requests_utility.post('orders', payload=payload, expected_status_code=400)
+
+    assert res_api['code'] == "rest_invalid_param"
+    assert res_api['message'] == "Invalid parameter(s): billing"
+
 
 @pytest.mark.regression
 def test_update_order_customer_note():

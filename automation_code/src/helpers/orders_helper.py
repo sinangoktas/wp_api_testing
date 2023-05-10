@@ -31,8 +31,36 @@ class OrdersHelper(object):
 
         return res_api
 
+
+    def update_order(self, order_id, **kwargs):
+
+        payload = dict()
+        payload.update(kwargs)
+
+        return self.requests_utility.put(f'orders/{order_id}', payload=payload)
+
+    def retrieve_order(self, order_id):
+        return self.requests_utility.get(f"orders/{order_id}")
+
+
+    def create_order_payload(self, additional_args=None):
+
+        payload_template = os.path.join(self.cur_file_dir, '..', 'data', 'create_order_payload.json')
+
+        with open(payload_template) as f:
+            payload = json.load(f)
+
+        # If user adds more info to payload, then update it
+        if additional_args:
+            assert isinstance(additional_args, dict), "Parameter 'additional_args' must be a dictionary"
+            payload.update(additional_args)
+
+        return payload
+
+
     @staticmethod
     def verify_order_is_created(order_json, exp_cust_id, exp_products):
+
         orders_dao = OrdersDAO()
 
         # Verify in API response
@@ -41,8 +69,8 @@ class OrdersHelper(object):
                                 Expected customer_id: {exp_cust_id} Actual:  '{order_json['customer_id']}'"
 
         assert len(order_json['line_items']) == len(exp_products), f"Expected {len(exp_products)} item/s in order " \
-                                                   f"Actual: '{len(order_json['line_items'])}'" \
-                                                   f"Order id: {order_json['id']}."
+                                                                   f"Actual: '{len(order_json['line_items'])}'" \
+                                                                   f"Order id: {order_json['id']}."
 
         # Verify in DB
         order_id = order_json['id']
@@ -56,15 +84,6 @@ class OrdersHelper(object):
         api_product_ids = [i['product_id'] for i in order_json['line_items']]
 
         for product in exp_products:
-            assert product['product_id'] in api_product_ids, f"Create order does not have at least 1 expected product in DB." \
-                                                             f"Product id: {product['product_id']}. Order id: {order_id}"
-
-    def update_order(self, order_id, **kwargs):
-
-        payload = dict()
-        payload.update(kwargs)
-
-        return self.requests_utility.put(f'orders/{order_id}', payload=payload)
-
-    def retrieve_order(self, order_id):
-        return self.requests_utility.get(f"orders/{order_id}")
+            assert product[
+                       'product_id'] in api_product_ids, f"Create order does not have at least 1 expected product in DB." \
+                                                         f"Product id: {product['product_id']}. Order id: {order_id}"
