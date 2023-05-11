@@ -11,6 +11,7 @@ class OrdersHelper(object):
         self.cur_file_dir = os.path.dirname(os.path.realpath(__file__))
         self.requests_utility = RequestsUtility()
 
+    # TODO do the order template fetching via method
     def create_order(self, additional_args=None):
 
         payload_template = os.path.join(self.cur_file_dir, '..', 'data', 'create_order_payload.json')
@@ -38,6 +39,7 @@ class OrdersHelper(object):
         payload.update(kwargs)
 
         return self.requests_utility.put(f'orders/{order_id}', payload=payload)
+
 
     def retrieve_order(self, order_id):
         return self.requests_utility.get(f"orders/{order_id}")

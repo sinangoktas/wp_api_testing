@@ -109,6 +109,7 @@ def test_update_customer_details():
     assert first_name_after == rnd_first_name
     assert first_name_before != first_name_after
 
+
 @pytest.mark.regression
 @pytest.mark.skip
 def test_delete_an_existing_customer():
