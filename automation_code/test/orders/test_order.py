@@ -10,7 +10,8 @@ from automation_code.src.helpers.products_helper import ProductsHelper
 from automation_code.src.utilities.requests_utility import RequestsUtility
 from automation_code.src.utilities.generic_utility import generate_random_string
 
-
+# TODO think of how to incorporate this into a utility method that can be usable for all services
+# TODO And check if the new approach can deprecate the create_order_payload.json
 @pytest.fixture(scope='module')
 def my_orders_smoke_setup():
     product_dao = ProductsDAO()

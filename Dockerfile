@@ -2,6 +2,9 @@
 # Therefore dockerizing this app for now is on hold
 FROM python:latest
 
+# TODO re-attempt dockerizing (Run only Integration Scenarios)
+# Because looks like we can not talk to Local's db from inside a container
+
 MAINTAINER sinang@somemail.com
 
 RUN apt-get update && apt-get -y install vim

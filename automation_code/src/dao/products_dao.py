@@ -48,6 +48,7 @@ class ProductsDAO(object):
 
         return random.sample(res_sql, int(qty))
 
+
     def get_random_products_that_are_on_sale(self, qty=1):
 
         sql = f"""SELECT * FROM {self.db_utility.database}.{self.db_utility.table_prefix}_posts WHERE post_type = 'product' AND id IN 

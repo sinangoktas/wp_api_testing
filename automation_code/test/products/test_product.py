@@ -118,19 +118,16 @@ def test_update_regular_price_should_update_price():
 
     # verify the response has the 'price' and 'regular_price' has updated and 'sale_price' is not updated
     assert res_update['price'] == new_price, f"Price > Actual: {res_update['price']}, Expected: {new_price}"
-
     assert res_update['regular_price'] == new_price, f"'regular_price' > Actual: ={res_update['price']}, Expected: {new_price}"
 
 
     # get the product after the update and verify response
     rs_product = product_helper.retrieve_product(product_id)
     assert rs_product['price'] == new_price, f"Price > Actual: {rs_product['price']}, Expected: {new_price}"
-
-    assert rs_product[
-               'regular_price'] == new_price, f"'regular_price' > Actual: ={rs_product['price']}, Expected: {new_price}"
+    assert rs_product['regular_price'] == new_price, f"'regular_price' > Actual: ={rs_product['price']}, Expected: {new_price}"
 
 
-# TODO This test case needs debugging
+# TODO This test case needs debugging .... Also add DB validation
 @pytest.mark.regression
 @pytest.mark.skip
 def test_adding_sale_price_should_set_on_sale_flag_true():
