@@ -62,8 +62,7 @@ def test_retrieve_customer_by_id():
     sample_customer_api = customer_helper.get_customer_by_id(sample_customer_id)
 
     # verify that details match
-    assert sample_customer_db[0]['user_email'] == sample_customer_api['email'], \
-        f"Emails does not match between db and api data. Customer Id: {sample_customer_id}"
+    assert sample_customer_db[0]['user_email'] == sample_customer_api['email'], f"Emails does not match between db and api data. Customer Id: {sample_customer_id}"
 
 
 @pytest.mark.regression
@@ -80,9 +79,7 @@ def test_create_customer_fails_existing_email():
     customer_api = req_utility.post(endpoint='customers', payload=payload, expected_status_code=400)
 
     # verify the error code
-    assert customer_api['code'] == 'registration-error-email-exists', \
-            f"Expected error code: 'registration-error-email-exists', " \
-                f"Actual: {customer_api['code']}"
+    assert customer_api['code'] == 'registration-error-email-exists', f"Expected error code: 'registration-error-email-exists' Actual: {customer_api['code']}"
 
 
 @pytest.mark.regression
@@ -112,6 +109,7 @@ def test_update_customer_details():
 
 @pytest.mark.regression
 @pytest.mark.skip
+# TODO solve the authentication problem
 def test_delete_an_existing_customer():
 
     # create a customer so to delete

@@ -1,8 +1,7 @@
 from automation_code.src.utilities.db_utility import DBUtility
 
+# TODO think of generic db_utility methods that can serve globally and improve the codebase of _dao files
 class OrdersDAO(object):
-
-    # TODO think of generic db_utility methods that can serve globally and improve the codebase of _dao files
 
     def __init__(self):
         self.db_utility = DBUtility()

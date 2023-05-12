@@ -17,9 +17,7 @@ def my_orders_smoke_setup():
     product_dao = ProductsDAO()
     rand_product = product_dao.get_random_product_from_db(1)
     product_id = rand_product[0]['ID']
-
     order_helper = OrdersHelper()
-
     info = {'product_id': product_id,
             'order_helper': order_helper}
 
@@ -121,7 +119,7 @@ def test_update_order_status_to_an_invalid_value():
     # res_api = order_helper.update_order(order_id, expected_status_code=400, status=new_status)
     payload = {"status": new_status}
     request_utility = RequestsUtility()
-    return request_utility.put(f"orders/{order_id}", payload=payload, expected_status_code=400)
+    res_api = request_utility.put(f"orders/{order_id}", payload=payload, expected_status_code=400)
 
     assert res_api['code'] == 'rest_invalid_param', f"Code > Expected: 'rest_invalid_param' Actual: {res_api['code']}"
     assert res_api['message'] == 'Invalid parameter(s): status', f"Message > Expected: 'rest_invalid_param' Actual: {res_api['message']}"
