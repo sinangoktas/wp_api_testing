@@ -188,3 +188,31 @@ def test_update_on_sale_field_buy_updating_sale_price():
     product_helper.update_product(product_id, {'sale_price': ''})
     product_after_update = product_helper.retrieve_product(product_id)
     assert not product_after_update['on_sale'], f"'on_sale' did not set to 'False' for Product id: {product_id}"
+
+    # assert that name of the product matches between api and db
+    product_dao = ProductsDAO()
+    product_name_api = [p for p in product_helper.list_products() if p['name'] == product_after_update['name']][0]['name']
+    product_name_db = product_dao.get_product_by_id(product_id)[0]['post_title']
+
+    assert product_name_api == product_name_db
+
+@pytest.mark.regression
+def test_product_categories_match_with_db():
+
+    # get a random product from db
+    product_dao = ProductsDAO()
+    rand_product = product_dao.get_random_product_from_db()
+    product_id = rand_product[0]['ID']
+
+    # fetch the categories from api
+    product_helper = ProductsHelper()
+    product_categories = product_helper.retrieve_product(product_id)['categories']
+    categories_list_api = [c['id'] for c in product_categories]
+
+    # verify the categories for the product in db
+    product_data_db = product_dao.get_product_table_data('term_relationships', 'object_id', product_id)
+    categories_list_db = [c['term_taxonomy_id'] for c in product_data_db]
+
+    match_list = [id for id in categories_list_api if id in categories_list_db]
+    assert len(match_list) >= 1, f"There should be at least one category matches between api and db data for a product"
+
