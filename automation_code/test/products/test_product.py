@@ -197,7 +197,7 @@ def test_update_on_sale_field_buy_updating_sale_price():
     assert product_name_api == product_name_db
 
 @pytest.mark.regression
-def test_product_categories_match_with_db():
+def test_product_categories_validate_in_db():
 
     # get a random product from db
     product_dao = ProductsDAO()
@@ -215,4 +215,10 @@ def test_product_categories_match_with_db():
 
     match_list = [id for id in categories_list_api if id in categories_list_db]
     assert len(match_list) >= 1, f"There should be at least one category matches between api and db data for a product"
+
+
+@pytest.mark.regression
+# TODO Implement
+def test_delete_a_product_and_verify_deletion():
+    pass
 

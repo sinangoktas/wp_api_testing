@@ -81,6 +81,7 @@ def test_create_paid_order_registered_customer(my_orders_smoke_setup):
 def test_update_order_status(new_status):
     # create a new order
     order_helper = OrdersHelper()
+    order_dao = OrdersDAO()
     order_json = order_helper.create_order()
     curr_status = order_json['status']
 
@@ -88,8 +89,15 @@ def test_update_order_status(new_status):
     if curr_status == new_status:
         new_status = [s for s in status_list if s != curr_status][0]
 
+
     # update order status
     order_id = order_json['id']
+
+    # retrieve order status in db
+    order_db_status_before = order_dao.get_order_table_data("posts", "ID", order_id)
+    assert order_db_status_before[0]['post_status'] == f"wc-{curr_status}"
+
+    # update the status
     order_helper.update_order(order_id, status=new_status)
 
     # get order information
@@ -99,11 +107,9 @@ def test_update_order_status(new_status):
     assert new_order_info['status'] == new_status, f"Updated order status to '{new_status}'," \
                                                    f"but order is still '{new_order_info['status']}'"
 
-    # verify the change in the db
-    order_dao = OrdersDAO()
-    order_data_db = order_dao.get_order_table_data("posts", "ID", order_id)
-
-    assert order_data_db[0]['post_status'] == f"wc-{new_status}"
+    # verify that order status updated in db
+    order_db_status_after = order_dao.get_order_table_data("posts", "ID", order_id)
+    assert order_db_status_after[0]['post_status'] == f"wc-{new_status}"
 
 
 @pytest.mark.regression
@@ -188,7 +194,7 @@ def test_apply_valid_coupon_to_order(my_setup_teardown):
 
     assert total == expected_total, f"Order total after applying coupon > Expected cost: {expected_total}, Actual: {total}"
 
-
+@pytest.mark.regression
 def test_create_order_with_invalid_email(my_orders_smoke_setup):
     order_helper = my_orders_smoke_setup['order_helper']
     product_id = my_orders_smoke_setup['product_id']
@@ -226,3 +232,14 @@ def test_create_order_with_invalid_email(my_orders_smoke_setup):
 
 
     assert sales_count_before == sales_count_after, f"sales_count should not have changed"
+
+
+"""
+Filter the list of orders by status, and verify that the filtered list matches the details stored in the WordPress database. 
+(status, another_attr and another_attr)
+"""
+
+@pytest.mark.regression
+# TODO Implement
+def test_delete_an_order_and_verify_deletion():
+    pass
