@@ -227,7 +227,7 @@ def test_create_order_with_invalid_email(my_orders_smoke_setup):
 
     # assert no change registered in db for the sales count
     product_dao = ProductsDAO()
-    table_data = product_dao.get_row_by_id("wc_product_meta_lookup", "product_id", product_id)
+    table_data = product_dao.get_product_table_data("wc_product_meta_lookup", "product_id", product_id)
     sales_count_after = table_data[0]['total_sales']
 
 

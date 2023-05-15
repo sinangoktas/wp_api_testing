@@ -76,11 +76,11 @@ class OrdersHelper(object):
 
         # Verify in DB
         order_id = order_json['id']
-        line_info = orders_dao.get_order_lines_by_order_id(order_id)
-        assert line_info, f"Create order, line item not found in DB. Order id: {order_id}"
+        item_info = orders_dao.get_order_table_data("woocommerce_order_items ", "order_id", order_id)
+        assert item_info, f"Create order, line item not found in DB. Order id: {order_id}"
 
-        line_items = [i for i in line_info if i['order_item_type'] == 'line_item']
-        assert len(line_items) == 1, f"Expected 1 line item but found {len(line_items)}. Order id: {order_id}"
+        db_items = [i for i in item_info if i['order_item_type'] == 'line_item']
+        assert len(db_items) == 1, f"Expected 1 line item but found {len(db_items)}. Order id: {order_id}"
 
         # Get list of product ids in the response
         api_product_ids = [i['product_id'] for i in order_json['line_items']]
