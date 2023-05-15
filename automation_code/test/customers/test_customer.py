@@ -37,7 +37,7 @@ def test_create_customer_only_email_password():
 
     # verify customer is created in database
     customer_dao = CustomersDAO()
-    customer_db_info = customer_dao.get_customer_by_email(email)
+    customer_db_info = customer_dao.get_customer_table_data("users", "user_email", f"'{email}'")
 
     assert customer_db_info[0]['user_registered'], \
         f"User registration date is not found in the db .... "
@@ -54,7 +54,7 @@ def test_retrieve_customer_by_id():
 
     # retrieve a customer from db
     customer_dao = CustomersDAO()
-    sample_customer_db = customer_dao.get_random_customer_from_db()
+    sample_customer_db = customer_dao.get_random_customer_from_db("users")
     sample_customer_id = sample_customer_db[0]['ID']
 
     # retrieve the customer from api
@@ -70,7 +70,7 @@ def test_create_customer_fails_existing_email():
 
     # get existing email from db
     customer_dao = CustomersDAO()
-    existing_cust = customer_dao.get_random_customer_from_db()
+    existing_cust = customer_dao.get_random_customer_from_db("users")
     existing_email = existing_cust[0]['user_email']
 
     # make the api call to create a customer with an existing email
@@ -87,11 +87,11 @@ def test_update_customer_details():
 
     # retrieve a customer from users table
     customer_dao = CustomersDAO()
-    existing_customer = customer_dao.get_random_customer_from_db()
+    existing_customer = customer_dao.get_random_customer_from_db("users")
     customer_id = existing_customer[0]['ID']
 
     # get the users first_name in customer_lookup table
-    customer_db_before = customer_dao.get_customer_by_id(customer_id)
+    customer_db_before = customer_dao.get_customer_table_data("wc_customer_lookup", "user_id", customer_id)
     first_name_before = customer_db_before[0]['first_name']
 
     # update the customer details using api
@@ -100,7 +100,7 @@ def test_update_customer_details():
     customer_helper.update_customer(customer_id, expected_status_code=200, first_name=rnd_first_name)
 
     # get the users first_name in customer_lookup table again
-    customer_db_after = customer_dao.get_customer_by_id(customer_id)
+    customer_db_after = customer_dao.get_customer_table_data("wc_customer_lookup", "user_id", customer_id)
     first_name_after = customer_db_after[0]['first_name']
     # verify that changes reflected in db
     assert first_name_after == rnd_first_name

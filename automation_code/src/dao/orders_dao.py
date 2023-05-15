@@ -6,8 +6,8 @@ class OrdersDAO(object):
         self.db_utility = DBUtility()
 
 
-    def get_order_table_data(self, table, id_attr, id):
+    def get_order_table_data(self, table, attr, value):
 
         sql = f'''SELECT * FROM {self.db_utility.database}.{self.db_utility.table_prefix}_{table}
-                  WHERE {id_attr} = {id};'''
+                  WHERE {attr} = {value};'''
         return self.db_utility.execute_select(sql)

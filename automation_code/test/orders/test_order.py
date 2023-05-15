@@ -15,7 +15,7 @@ from automation_code.src.utilities.generic_utility import generate_random_string
 @pytest.fixture(scope='module')
 def my_orders_smoke_setup():
     product_dao = ProductsDAO()
-    rand_product = product_dao.get_random_product_from_db(1)
+    rand_product = product_dao.get_random_product_from_db("posts")
     product_id = rand_product[0]['ID']
     order_helper = OrdersHelper()
     info = {'product_id': product_id,

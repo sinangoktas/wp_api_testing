@@ -19,7 +19,7 @@ def test_get_all_products():
 def test_get_product_by_id():
 
     # get a product (test data) from db
-    rand_product = ProductsDAO().get_random_product_from_db(1)
+    rand_product = ProductsDAO().get_random_product_from_db("posts")
     rand_product_id = rand_product[0]['ID']
     db_name = rand_product[0]['post_title']
 
@@ -50,7 +50,7 @@ def test_create_a_simple_product():
 
     # verify that product exists in db
     product_id = product_res['id']
-    db_product = ProductsDAO().get_product_by_id(product_id)
+    db_product = ProductsDAO().get_product_table_data("posts", "ID", product_id)
 
     assert payload['name'] == db_product[0]['post_title'], f"Product name > DB: {db_product['post_title']}, API: {payload['name']}"
 
@@ -94,7 +94,7 @@ def test_update_regular_price_should_update_price():
     product_helper = ProductsHelper()
     product_dao = ProductsDAO()
 
-    rand_products = product_dao.get_random_product_from_db(10)
+    rand_products = product_dao.get_random_product_from_db("posts", 10)
     for product in rand_products:
         product_id = product['ID']
         product_data = product_helper.retrieve_product(product_id)
@@ -192,7 +192,7 @@ def test_update_on_sale_field_buy_updating_sale_price():
     # assert that name of the product matches between api and db
     product_dao = ProductsDAO()
     product_name_api = [p for p in product_helper.list_products() if p['name'] == product_after_update['name']][0]['name']
-    product_name_db = product_dao.get_product_by_id(product_id)[0]['post_title']
+    product_name_db = product_dao.get_product_table_data("posts", "ID", product_id)[0]['post_title']
 
     assert product_name_api == product_name_db
 
@@ -201,7 +201,7 @@ def test_product_categories_validate_in_db():
 
     # get a random product from db
     product_dao = ProductsDAO()
-    rand_product = product_dao.get_random_product_from_db()
+    rand_product = product_dao.get_random_product_from_db("posts")
     product_id = rand_product[0]['ID']
 
     # fetch the categories from api

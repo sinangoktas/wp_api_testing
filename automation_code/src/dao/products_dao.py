@@ -6,26 +6,17 @@ class ProductsDAO(object):
     def __init__(self):
         self.db_utility = DBUtility()
 
-    def get_random_product_from_db(self, qty=1):
+    def get_random_product_from_db(self, table, qty=1):
 
-        sql = f'''SELECT * FROM {self.db_utility.database}.{self.db_utility.table_prefix}_posts 
-                  WHERE post_type = "product" LIMIT 5000;'''
+        sql = f'''SELECT * FROM {self.db_utility.database}.{self.db_utility.table_prefix}_{table} WHERE post_type = "product" LIMIT 1000;'''
         res_sql = self.db_utility.execute_select(sql)
-
         return random.sample(res_sql, int(qty))
 
-    def get_product_by_id(self, product_id):
 
-        sql = f'''SELECT * FROM {self.db_utility.database}.{self.db_utility.table_prefix}_posts 
-                  WHERE ID = {product_id};'''
-
-        return self.db_utility.execute_select(sql)
-
-
-    def get_product_table_data(self, table, id_attr, id):
+    def get_product_table_data(self, table, attr, value):
 
         sql = f'''SELECT * FROM {self.db_utility.database}.{self.db_utility.table_prefix}_{table}
-                  WHERE {id_attr} = {id};'''
+                  WHERE {attr} = {value};'''
 
         return self.db_utility.execute_select(sql)
 
