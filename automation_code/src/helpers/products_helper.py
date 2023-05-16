@@ -6,11 +6,18 @@ class ProductsHelper(object):
     def __init__(self):
         self.requests_utility = RequestsUtility()
 
-    def get_product_by_id(self, product_id):
-        return self.requests_utility.get(f"products/{product_id}")
+    def retrieve_product(self, product_id):
+        product_api_res = self.requests_utility.get(f'products/{product_id}', expected_status_code=200)
+        return product_api_res
 
-    def create_product(self, payload):
-        return self.requests_utility.post('products', payload=payload, expected_status_code=201)
+    def create_product(self, **kwargs):
+        payload = dict()
+        payload.update(kwargs)
+        create_product_json = self.requests_utility.post('products', payload=payload, expected_status_code=201)
+        return create_product_json
+
+    def update_product(self, product_id, payload=None):
+        return self.requests_utility.put(f'products/{product_id}', payload=payload)
 
     def list_products(self, payload=None):
 
@@ -38,9 +45,3 @@ class ProductsHelper(object):
             raise Exception(f"Unable to find all products after {max_pages} pages.")
 
         return all_products
-
-    def retrieve_product(self, product_id):
-        return self.requests_utility.get(f'products/{product_id}')
-
-    def update_product(self, product_id, payload=None):
-        return self.requests_utility.put(f'products/{product_id}', payload=payload)

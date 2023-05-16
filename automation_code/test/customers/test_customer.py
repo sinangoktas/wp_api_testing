@@ -59,7 +59,7 @@ def test_retrieve_customer_by_id():
 
     # retrieve the customer from api
     customer_helper = CustomerHelper()
-    sample_customer_api = customer_helper.get_customer_by_id(sample_customer_id)
+    sample_customer_api = customer_helper.retrieve_customer(sample_customer_id)
 
     # verify that details match
     assert sample_customer_db[0]['user_email'] == sample_customer_api['email'], f"Emails does not match between db and api data. Customer Id: {sample_customer_id}"
@@ -97,7 +97,7 @@ def test_update_customer_details():
     # update the customer details using api
     customer_helper = CustomerHelper()
     rnd_first_name = ''.join(random.choices(string.ascii_lowercase, k=10))
-    customer_helper.update_customer(customer_id, expected_status_code=200, first_name=rnd_first_name)
+    customer_helper.update_customer(customer_id, first_name=rnd_first_name)
 
     # get the users first_name in customer_lookup table again
     customer_db_after = customer_dao.get_customer_table_data("wc_customer_lookup", "user_id", customer_id)

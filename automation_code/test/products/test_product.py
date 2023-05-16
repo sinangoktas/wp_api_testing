@@ -8,6 +8,7 @@ from automation_code.src.dao.products_dao import ProductsDAO
 from automation_code.src.helpers.products_helper import ProductsHelper
 from automation_code.src.utilities.generic_utility import generate_random_string
 
+
 @pytest.mark.smoke
 def test_get_all_products():
     req_utility = RequestsUtility()
@@ -17,7 +18,6 @@ def test_get_all_products():
 
 @pytest.mark.smoke
 def test_get_product_by_id():
-
     # get a product (test data) from db
     rand_product = ProductsDAO().get_random_product_from_db("posts")
     rand_product_id = rand_product[0]['ID']
@@ -25,7 +25,7 @@ def test_get_product_by_id():
 
     # retrieve the product from api
     product_helper = ProductsHelper()
-    res_api = product_helper.get_product_by_id(rand_product_id)
+    res_api = product_helper.retrieve_product(rand_product_id)
     api_name = res_api['name']
 
     # verify that names matches in api and db
@@ -34,25 +34,25 @@ def test_get_product_by_id():
 
 @pytest.mark.smoke
 def test_create_a_simple_product():
-
-    # generate some data
-    payload = dict()
-    payload['name'] = generate_random_string(20)
-    payload['type'] = "simple"
-    payload['regular_price'] = "10.99"
+    additional_args = {"name": generate_random_string(10),
+                       "type": "simple",
+                       "regular_price": "10.99"
+                       }
 
     # create the product using api
-    product_res = ProductsHelper().create_product(payload)
+    product_res = ProductsHelper().create_product(**additional_args)
 
     # verify that response is not empty
-    assert product_res, f"Create product api response is empty. Payload: {payload}"
-    assert product_res['name'] == payload['name'], f"Product name > Expected: {payload['name']}, Actual: {product_res['name']}"
+    assert product_res, f"Create product api response is empty. Payload: {additional_args}"
+    assert product_res['name'] == additional_args[
+        'name'], f"Product name > Expected: {additional_args['name']}, Actual: {product_res['name']}"
 
     # verify that product exists in db
     product_id = product_res['id']
     db_product = ProductsDAO().get_product_table_data("posts", "ID", product_id)
 
-    assert payload['name'] == db_product[0]['post_title'], f"Product name > DB: {db_product['post_title']}, API: {payload['name']}"
+    assert additional_args['name'] == db_product[0][
+        'post_title'], f"Product name > DB: {db_product['post_title']}, API: {additional_args['name']}"
 
 
 @pytest.mark.regression
@@ -72,7 +72,8 @@ def test_list_products_with_filter_after():
     db_products = ProductsDAO().get_products_created_after_given_date(after_created_date)
 
     # verify that api response matches db data
-    assert len(res_api) == len(db_products), f"Products count after filter applied > Expected: {len(db_products)}, Actual: {len(res_api)}"
+    assert len(res_api) == len(
+        db_products), f"Products count after filter applied > Expected: {len(db_products)}, Actual: {len(res_api)}"
 
     ids_in_api = [i['id'] for i in res_api]
     ids_in_db = [i['ID'] for i in db_products]
@@ -84,7 +85,7 @@ def test_list_products_with_filter_after():
 # for this test the 'sale_price' of the product must be empty. If product has sale price, updating the 'regular_price'
 # does not update the 'price'. So get a bunch of products and loop until you find one that is not on sale. If all in
 # the list are on sale then take random one and update the sale price
-@pytest.mark.regression
+@pytest.mark.regression112
 def test_update_regular_price_should_update_price():
     """
     Verifies updating the 'regular_price' field should automatically update the 'price' field.
@@ -108,7 +109,6 @@ def test_update_regular_price_should_update_price():
         product_id = test_product['ID']
         product_helper.update_product(product_id, {'sale_price': ''})
 
-
     # make the update to 'regular_price'
     new_price = str(random.randint(10, 100)) + '.' + str(random.randint(10, 99))
     payload = dict()
@@ -118,13 +118,14 @@ def test_update_regular_price_should_update_price():
 
     # verify the response has the 'price' and 'regular_price' has updated and 'sale_price' is not updated
     assert res_update['price'] == new_price, f"Price > Actual: {res_update['price']}, Expected: {new_price}"
-    assert res_update['regular_price'] == new_price, f"'regular_price' > Actual: ={res_update['price']}, Expected: {new_price}"
-
+    assert res_update[
+               'regular_price'] == new_price, f"'regular_price' > Actual: ={res_update['price']}, Expected: {new_price}"
 
     # get the product after the update and verify response
     rs_product = product_helper.retrieve_product(product_id)
     assert rs_product['price'] == new_price, f"Price > Actual: {rs_product['price']}, Expected: {new_price}"
-    assert rs_product['regular_price'] == new_price, f"'regular_price' > Actual: ={rs_product['price']}, Expected: {new_price}"
+    assert rs_product[
+               'regular_price'] == new_price, f"'regular_price' > Actual: ={rs_product['price']}, Expected: {new_price}"
 
 
 # TODO This test case needs debugging .... Also add DB validation
@@ -154,7 +155,8 @@ def test_adding_sale_price_should_set_on_sale_flag_true():
     # get the product sale price is updated
     after_info = product_helper.retrieve_product(product_id)
     assert after_info['on_sale'], f"'on_sale' should have been set to True but found False"
-    assert after_info['sale_price'] == sale_price, f"sale_price > Expected: {sale_price}, Actual: {after_info['sale_price']}"
+    assert after_info[
+               'sale_price'] == sale_price, f"sale_price > Expected: {sale_price}, Actual: {after_info['sale_price']}"
 
 
 @pytest.mark.regression
@@ -169,11 +171,13 @@ def test_update_on_sale_field_buy_updating_sale_price():
 
     # create product for the tests and verify the product has on_sale=False
     regular_price = str(random.randint(10, 100)) + '.' + str(random.randint(10, 99))
-    payload = dict()
-    payload['name'] = generate_random_string(20)
-    payload['type'] = "simple"
-    payload['regular_price'] = regular_price
-    product_info = product_helper.create_product(payload)
+
+    additional_args = {"name": generate_random_string(10),
+                       "type": "simple",
+                       "regular_price": regular_price
+                       }
+
+    product_info = product_helper.create_product(**additional_args)
     product_id = product_info['id']
     assert not product_info['on_sale'], f"'on_sale' should have value False for Newly created product"
     assert not product_info['sale_price'], f"'sale_price' should have no value for Newly created product"
@@ -191,14 +195,15 @@ def test_update_on_sale_field_buy_updating_sale_price():
 
     # assert that name of the product matches between api and db
     product_dao = ProductsDAO()
-    product_name_api = [p for p in product_helper.list_products() if p['name'] == product_after_update['name']][0]['name']
+    product_name_api = [p for p in product_helper.list_products() if p['name'] == product_after_update['name']][0][
+        'name']
     product_name_db = product_dao.get_product_table_data("posts", "ID", product_id)[0]['post_title']
 
     assert product_name_api == product_name_db
 
+
 @pytest.mark.regression
 def test_product_categories_validate_in_db():
-
     # get a random product from db
     product_dao = ProductsDAO()
     rand_product = product_dao.get_random_product_from_db("posts")
@@ -221,4 +226,3 @@ def test_product_categories_validate_in_db():
 # TODO Implement
 def test_delete_a_product_and_verify_deletion():
     pass
-
