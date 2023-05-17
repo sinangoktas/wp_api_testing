@@ -11,20 +11,16 @@ def generate_random_email_and_password(domain=None, email_prefix=None):
         email_prefix = 't_u'
 
     email_length = 5
-    email = email_prefix + '_' +\
-            ''.join(random.choices(string.ascii_lowercase, k=email_length)) +\
-            '@' + domain
-
     password_length = 10
+    email = email_prefix + '_' + ''.join(random.choices(string.ascii_lowercase, k=email_length)) + '@' + domain
     password = ''.join(random.choices(string.ascii_letters, k=password_length))
-
     user_info = {'email': email, 'password': password}
-    logger.debug(f"Randomly generated email and password: {user_info}")
 
+    logger.debug(f"Randomly generated email and password: {user_info}")
     return user_info
 
-def generate_random_string(length=10, prefix=None, suffix=None):
 
+def generate_random_string(length=10, prefix=None, suffix=None):
     random_string = ''.join(random.choices(string.ascii_lowercase, k=length))
 
     if prefix:
@@ -34,9 +30,10 @@ def generate_random_string(length=10, prefix=None, suffix=None):
 
     return random_string
 
-def generate_random_coupon_code(suffix=None, length=10):
 
+def generate_random_coupon_code(suffix=None, length=10):
     code = ''.join(random.choices(string.ascii_uppercase, k=length))
+
     if suffix:
         code += suffix
 

@@ -39,7 +39,7 @@ def test_create_paid_order_guest_user(my_orders_smoke_setup):
             "quantity": 1
         }
     ]}
-    order_json = order_helper.create_order(additional_args=info)
+    order_json = order_helper.create_order(**info)
 
     # Verify the response
     expected_products = [{'product_id': product_id}]
@@ -65,7 +65,7 @@ def test_create_paid_order_registered_customer(my_orders_smoke_setup):
     ],
         "customer_id": customer_id
     }
-    order_json = order_helper.create_order(additional_args=info)
+    order_json = order_helper.create_order(**info)
 
     # # verify response
     expected_products = [{'product_id': product_id}]
@@ -182,7 +182,7 @@ def test_apply_valid_coupon_to_order(my_setup_teardown):
         "shipping_lines": [{"method_id": "flat_rate", "method_title": "Flat Rate", "total": "0.00"}]
     }
 
-    res_order = order_helper.create_order(additional_args=order_payload_addition)
+    res_order = order_helper.create_order(**order_payload_addition)
 
     # calculate expected total price based on coupon and product price
     expected_total = float(my_setup_teardown['product_price']) \
@@ -201,7 +201,7 @@ def test_create_order_with_invalid_email(my_orders_smoke_setup):
 
     # data with invalid email address
     info = {"billing": {
-        "email": "thisIsNotAgoodEmailAdress.com"
+        "email": "notGoodEmailAddr.com"
     },
         "line_items": [
             {

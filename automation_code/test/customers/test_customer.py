@@ -20,33 +20,31 @@ def test_retrieve_all_customers():
 
 @pytest.mark.smoke
 def test_create_customer_only_email_password():
-
+    # if you want to log a test description
     logger.info("TEST: Create new customer with email and password only.")
 
+    # create user's credentials
     user_info = generic_utility.generate_random_email_and_password()
     email = user_info['email']
-    # password = user_info['password']
 
-    # make the api call to create a customer
+    # make the api call to create the user
     customer_obj = CustomerHelper()
     customer_api_info = customer_obj.create_customer(email=email)
 
     # verify email and first name in the response
     assert customer_api_info['email'] == email, \
-        f"Create customer api return wrong email. Email: {email}"
+                                f"Create customer api return wrong email. Email: {email}"
 
     # verify customer is created in database
     customer_dao = CustomersDAO()
     customer_db_info = customer_dao.get_customer_table_data("users", "user_email", f"'{email}'")
-
     assert customer_db_info[0]['user_registered'], \
-        f"User registration date is not found in the db .... "
+                                             f"User registration date is not found in the db .... "
 
     id_in_api = customer_api_info['id']
     id_in_db = customer_db_info[0]['ID']
     assert id_in_api == id_in_db, \
-        f'Create customer api: "id" not same as "ID" in database' \
-                                  f'Email: {email}'
+                      f'Create customer api: "id" not same as "ID" in database Email: {email}'
 
 
 @pytest.mark.smoke
@@ -62,7 +60,8 @@ def test_retrieve_customer_by_id():
     sample_customer_api = customer_helper.retrieve_customer(sample_customer_id)
 
     # verify that details match
-    assert sample_customer_db[0]['user_email'] == sample_customer_api['email'], f"Emails does not match between db and api data. Customer Id: {sample_customer_id}"
+    assert sample_customer_db[0]['user_email'] == sample_customer_api['email'], f"Emails does not match between db and api data. " \
+                                                                                f"Customer Id: {sample_customer_id}"
 
 
 @pytest.mark.regression
@@ -79,7 +78,8 @@ def test_create_customer_fails_existing_email():
     customer_api = req_utility.post(endpoint='customers', payload=payload, expected_status_code=400)
 
     # verify the error code
-    assert customer_api['code'] == 'registration-error-email-exists', f"Expected error code: 'registration-error-email-exists' Actual: {customer_api['code']}"
+    assert customer_api['code'] == 'registration-error-email-exists', f"Expected error code: 'registration-error-email-exists'" \
+                                                                      f" Actual: {customer_api['code']}"
 
 
 @pytest.mark.regression
@@ -102,9 +102,10 @@ def test_update_customer_details():
     # get the users first_name in customer_lookup table again
     customer_db_after = customer_dao.get_customer_table_data("wc_customer_lookup", "user_id", customer_id)
     first_name_after = customer_db_after[0]['first_name']
+
     # verify that changes reflected in db
     assert first_name_after == rnd_first_name
-    assert first_name_before != first_name_after
+    assert first_name_before != first_name_after, f"first_name >>> should have been updated with {rnd_first_name}"
 
 
 @pytest.mark.regression
