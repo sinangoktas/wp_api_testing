@@ -29,7 +29,7 @@ def test_get_product_by_id():
     api_name = res_api['name']
 
     # verify that names matches in api and db
-    assert db_name == api_name, f" Product Id: {rand_product_id} > Db name: {db_name}, Api name: {api_name}"
+    assert db_name == api_name, f" Product Id: {rand_product_id} >>> Db name: {db_name}, Api name: {api_name}"
 
 
 @pytest.mark.smoke
@@ -44,8 +44,9 @@ def test_create_a_simple_product():
 
     # verify that response is not empty
     assert product_res, f"Create product api response is empty. Payload: {additional_args}"
-    assert product_res['name'] == additional_args[
-        'name'], f"Product name > Expected: {additional_args['name']}, Actual: {product_res['name']}"
+    assert product_res['name'] == additional_args['name'], f"Product name >>> " \
+                                                           f"Expected: {additional_args['name']}, " \
+                                                           f"Actual: {product_res['name']}"
 
     # verify that product exists in db
     product_id = product_res['id']
@@ -73,7 +74,7 @@ def test_list_products_with_filter_after():
 
     # verify that api response matches db data
     assert len(res_api) == len(
-        db_products), f"Products count after filter applied > Expected: {len(db_products)}, Actual: {len(res_api)}"
+        db_products), f"Products count after filter applied >>> Expected: {len(db_products)}, Actual: {len(res_api)}"
 
     ids_in_api = [i['id'] for i in res_api]
     ids_in_db = [i['ID'] for i in db_products]
@@ -94,7 +95,6 @@ def test_update_regular_price_should_update_price():
     # create helper objects and get random product from db
     product_helper = ProductsHelper()
     product_dao = ProductsDAO()
-
     rand_products = product_dao.get_random_product_from_db("posts", 10)
     for product in rand_products:
         product_id = product['ID']
@@ -115,14 +115,12 @@ def test_update_regular_price_should_update_price():
 
     # verify the response has the 'price' and 'regular_price' has updated and 'sale_price' is not updated
     assert res_update['price'] == new_price, f"Price > Actual: {res_update['price']}, Expected: {new_price}"
-    assert res_update[
-               'regular_price'] == new_price, f"'regular_price' > Actual: ={res_update['price']}, Expected: {new_price}"
+    assert res_update['regular_price'] == new_price, f"'regular_price' > Actual: ={res_update['price']}, Expected: {new_price}"
 
     # get the product after the update and verify response
     rs_product = product_helper.retrieve_product(product_id)
     assert rs_product['price'] == new_price, f"Price > Actual: {rs_product['price']}, Expected: {new_price}"
-    assert rs_product[
-               'regular_price'] == new_price, f"'regular_price' > Actual: ={rs_product['price']}, Expected: {new_price}"
+    assert rs_product['regular_price'] == new_price, f"'regular_price' > Actual: ={rs_product['price']}, Expected: {new_price}"
 
 
 # TODO add DB validation

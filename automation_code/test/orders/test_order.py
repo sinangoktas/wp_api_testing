@@ -101,11 +101,10 @@ def test_update_order_status(new_status):
     order_helper.update_order(order_id, status=new_status)
 
     # get order information
-    new_order_info = order_helper.retrieve_order(order_id)
+    order_after_update = order_helper.retrieve_order(order_id)
 
     # verify new orders status
-    assert new_order_info['status'] == new_status, f"Updated order status to '{new_status}'," \
-                                                   f"but order is still '{new_order_info['status']}'"
+    assert order_after_update['status'] == new_status, f"status >>> Expected: '{new_status} Actual: {order_after_update['status']}'"
 
     # verify that order status updated in db
     order_db_status_after = order_dao.get_order_table_data("posts", "ID", order_id)
@@ -122,13 +121,12 @@ def test_update_order_status_to_an_invalid_value():
     order_id = order_json['id']
 
     # update the status
-    # res_api = order_helper.update_order(order_id, expected_status_code=400, status=new_status)
     payload = {"status": new_status}
     request_utility = RequestsUtility()
     res_api = request_utility.put(f"orders/{order_id}", payload=payload, expected_status_code=400)
 
-    assert res_api['code'] == 'rest_invalid_param', f"Code > Expected: 'rest_invalid_param' Actual: {res_api['code']}"
-    assert res_api['message'] == 'Invalid parameter(s): status', f"Message > Expected: 'rest_invalid_param' Actual: {res_api['message']}"
+    assert res_api['code'] == 'rest_invalid_param', f"Code >>> Expected: 'rest_invalid_param' Actual: {res_api['code']}"
+    assert res_api['message'] == 'Invalid parameter(s): status', f"Message >>> Expected: 'rest_invalid_param' Actual: {res_api['message']}"
 
 
 @pytest.mark.regression
@@ -145,9 +143,10 @@ def test_update_order_customer_note():
 
     # # verify the note in the order info api
     new_order_info = order_helper.retrieve_order(order_id)
-    assert new_order_info['customer_note'] == rand_string, f"Customer note >  Expected: {rand_string}, \
-                                                                        Actual: {new_order_info['customer_note']}"
+    assert new_order_info['customer_note'] == rand_string, f"Customer note >>>  Expected: {rand_string}, \
+                                                                                Actual: {new_order_info['customer_note']}"
 
+# TODO why is this called tear_down???
 @pytest.fixture(scope='module')
 def my_setup_teardown():
     # hard code a 50% coupon from wp_admin > woocommerce
@@ -175,13 +174,11 @@ def test_apply_valid_coupon_to_order(my_setup_teardown):
 
     # create payload and make call to create order
     order_helper = OrdersHelper()
-
     order_payload_addition = {
         "line_items": [{"product_id": my_setup_teardown['product_id'], "quantity": 1}],
         "coupon_lines": [{"code": my_setup_teardown['coupon_code']}],
         "shipping_lines": [{"method_id": "flat_rate", "method_title": "Flat Rate", "total": "0.00"}]
     }
-
     res_order = order_helper.create_order(**order_payload_addition)
 
     # calculate expected total price based on coupon and product price
@@ -192,7 +189,7 @@ def test_apply_valid_coupon_to_order(my_setup_teardown):
     total = round(float(res_order['total']), 2)
     expected_total = round(expected_total, 2)
 
-    assert total == expected_total, f"Order total after applying coupon > Expected cost: {expected_total}, Actual: {total}"
+    assert total == expected_total, f"Order total after applying coupon >>> Expected cost: {expected_total}, Actual: {total}"
 
 @pytest.mark.regression
 def test_create_order_with_invalid_email(my_orders_smoke_setup):
@@ -209,34 +206,27 @@ def test_create_order_with_invalid_email(my_orders_smoke_setup):
             }
         ]
     }
-
     # get the existing sales count for the product
     product_dao = ProductsDAO()
     table_data = product_dao.get_product_table_data("wc_product_meta_lookup", "product_id", product_id)
     sales_count_before = table_data[0]['total_sales']
 
-    # create the order payload
+    # create the order payload and make the call
     payload = order_helper.create_order_payload(additional_args=info)
-
     requests_utility = RequestsUtility()
     res_api = requests_utility.post('orders', payload=payload, expected_status_code=400)
 
-    assert res_api['code'] == "rest_invalid_param", f"Response code > Expected: rest_invalid_param, Actual: {res_api['code']}"
-    assert res_api['message'] == "Invalid parameter(s): billing", f"Response message > Expected: Invalid parameter(s): billing, Actual: {res_api['message']}"
+    assert res_api['code'] == "rest_invalid_param", f"Response code >>> Expected: rest_invalid_param, " \
+                                                    f"Actual: {res_api['code']}"
+    assert res_api['message'] == "Invalid parameter(s): billing", f"Response message >>> Expected: Invalid parameter(s): billing, " \
+                                                                  f"Actual: {res_api['message']}"
 
     # assert no change registered in db for the sales count
     product_dao = ProductsDAO()
     table_data = product_dao.get_product_table_data("wc_product_meta_lookup", "product_id", product_id)
     sales_count_after = table_data[0]['total_sales']
-
-
     assert sales_count_before == sales_count_after, f"sales_count should not have changed"
 
-
-"""
-Filter the list of orders by status, and verify that the filtered list matches the details stored in the WordPress database. 
-(status, another_attr and another_attr)
-"""
 
 @pytest.mark.regression
 # TODO Implement

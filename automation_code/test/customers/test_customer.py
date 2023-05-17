@@ -32,24 +32,20 @@ def test_create_customer_only_email_password():
     customer_api_info = customer_obj.create_customer(email=email)
 
     # verify email and first name in the response
-    assert customer_api_info['email'] == email, \
-                                f"Create customer api return wrong email. Email: {email}"
+    assert customer_api_info['email'] == email, f"Create customer api return wrong email. Email: {email}"
 
     # verify customer is created in database
     customer_dao = CustomersDAO()
     customer_db_info = customer_dao.get_customer_table_data("users", "user_email", f"'{email}'")
-    assert customer_db_info[0]['user_registered'], \
-                                             f"User registration date is not found in the db .... "
+    assert customer_db_info[0]['user_registered'], f"User registration date is not found in the db .... "
 
     id_in_api = customer_api_info['id']
     id_in_db = customer_db_info[0]['ID']
-    assert id_in_api == id_in_db, \
-                      f'Create customer api: "id" not same as "ID" in database Email: {email}'
+    assert id_in_api == id_in_db,  f'Create customer api: "id" not same as "ID" in database Email: {email}'
 
 
 @pytest.mark.smoke
 def test_retrieve_customer_by_id():
-
     # retrieve a customer from db
     customer_dao = CustomersDAO()
     sample_customer_db = customer_dao.get_random_customer_from_db("users")
@@ -66,7 +62,6 @@ def test_retrieve_customer_by_id():
 
 @pytest.mark.regression
 def test_create_customer_fails_existing_email():
-
     # get existing email from db
     customer_dao = CustomersDAO()
     existing_cust = customer_dao.get_random_customer_from_db("users")
@@ -84,7 +79,6 @@ def test_create_customer_fails_existing_email():
 
 @pytest.mark.regression
 def test_update_customer_details():
-
     # retrieve a customer from users table
     customer_dao = CustomersDAO()
     existing_customer = customer_dao.get_random_customer_from_db("users")
@@ -111,7 +105,6 @@ def test_update_customer_details():
 @pytest.mark.regression
 # TODO solve the authentication problem
 def test_delete_an_existing_customer():
-    return
 
     # create a customer so to delete
     customer_helper = CustomerHelper()
@@ -126,5 +119,7 @@ def test_delete_an_existing_customer():
     customer_helper.delete_customer(customer_id, expected_status_code=501)
 
     # verify the deletion using api and also in db
+
+    return
 
 
