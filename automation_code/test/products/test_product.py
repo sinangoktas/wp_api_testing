@@ -85,7 +85,7 @@ def test_list_products_with_filter_after():
 # for this test the 'sale_price' of the product must be empty. If product has sale price, updating the 'regular_price'
 # does not update the 'price'. So get a bunch of products and loop until you find one that is not on sale. If all in
 # the list are on sale then take random one and update the sale price
-@pytest.mark.regression112
+@pytest.mark.regression
 def test_update_regular_price_should_update_price():
     """
     Verifies updating the 'regular_price' field should automatically update the 'price' field.
@@ -107,14 +107,11 @@ def test_update_regular_price_should_update_price():
         # take a random product and make it not on sale by setting sale_price=''
         test_product = random.choice(rand_products)
         product_id = test_product['ID']
-        product_helper.update_product(product_id, {'sale_price': ''})
+        product_helper.update_product(product_id, **{'sale_price': ''})
 
     # make the update to 'regular_price'
     new_price = str(random.randint(10, 100)) + '.' + str(random.randint(10, 99))
-    payload = dict()
-    payload['regular_price'] = new_price
-
-    res_update = product_helper.update_product(product_id, payload=payload)
+    res_update = product_helper.update_product(product_id, **{'regular_price': new_price})
 
     # verify the response has the 'price' and 'regular_price' has updated and 'sale_price' is not updated
     assert res_update['price'] == new_price, f"Price > Actual: {res_update['price']}, Expected: {new_price}"
@@ -128,9 +125,8 @@ def test_update_regular_price_should_update_price():
                'regular_price'] == new_price, f"'regular_price' > Actual: ={rs_product['price']}, Expected: {new_price}"
 
 
-# TODO This test case needs debugging .... Also add DB validation
+# TODO add DB validation
 @pytest.mark.regression
-@pytest.mark.skip
 def test_adding_sale_price_should_set_on_sale_flag_true():
     """
     When the sale price of a product is updated, then it should set the field 'on_sale' = True
@@ -148,19 +144,15 @@ def test_adding_sale_price_should_set_on_sale_flag_true():
     assert original_info['regular_price'], "regular_price should not be empty"
 
     sale_price = round(float(original_info['regular_price']) * 0.75, 2)
-    payload = dict()
-    payload['sale_price'] = str(sale_price)
-    product_helper.update_product(product_id, payload=payload)
+    product_helper.update_product(product_id, **{'sale_price': str(sale_price)})
 
     # get the product sale price is updated
     after_info = product_helper.retrieve_product(product_id)
     assert after_info['on_sale'], f"'on_sale' should have been set to True but found False"
-    assert after_info[
-               'sale_price'] == sale_price, f"sale_price > Expected: {sale_price}, Actual: {after_info['sale_price']}"
-
+    assert after_info['sale_price'] == str(sale_price), f"sale_price >> Expected: {sale_price}, Actual: {after_info['sale_price']}"
 
 @pytest.mark.regression
-def test_update_on_sale_field_buy_updating_sale_price():
+def test_update_on_sale_field_by_updating_sale_price():
     """
     Two test case.
     First case update the 'sale_price > 0' and verify the field changes to 'on_sale=True'.
@@ -184,12 +176,12 @@ def test_update_on_sale_field_buy_updating_sale_price():
 
     # update the 'sale_price' and verify the 'on_sale' is set to True
     sale_price = float(regular_price) * .75
-    product_helper.update_product(product_id, {'sale_price': str(sale_price)})
+    product_helper.update_product(product_id, **{'sale_price': str(sale_price)})
     product_after_update = product_helper.retrieve_product(product_id)
     assert product_after_update['on_sale'], f"'on_sale' did not set to 'True' for Product id: {product_id}"
 
     # update the sale_price to empty string and verify the 'on_sale is set to False
-    product_helper.update_product(product_id, {'sale_price': ''})
+    product_helper.update_product(product_id, **{'sale_price': ''})
     product_after_update = product_helper.retrieve_product(product_id)
     assert not product_after_update['on_sale'], f"'on_sale' did not set to 'False' for Product id: {product_id}"
 

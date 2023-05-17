@@ -141,7 +141,7 @@ def test_update_order_customer_note():
     # update order with a customer note
     rand_string = generate_random_string(40)
     info = {"customer_note": rand_string}
-    order_helper.update_order(order_id, expected_status_code=200, **info)
+    order_helper.update_order(order_id, **info)
 
     # # verify the note in the order info api
     new_order_info = order_helper.retrieve_order(order_id)
@@ -214,7 +214,6 @@ def test_create_order_with_invalid_email(my_orders_smoke_setup):
     product_dao = ProductsDAO()
     table_data = product_dao.get_product_table_data("wc_product_meta_lookup", "product_id", product_id)
     sales_count_before = table_data[0]['total_sales']
-
 
     # create the order payload
     payload = order_helper.create_order_payload(additional_args=info)

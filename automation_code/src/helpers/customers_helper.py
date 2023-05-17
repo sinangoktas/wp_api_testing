@@ -40,6 +40,5 @@ class CustomerHelper(object):
                 'Content-Type': 'application/json',
                 'Authorization': f'Basic {base64.b64encode(f"{username}:{password}".encode()).decode()}'
             }
-
         delete_customer_res = self.requests_utility.delete(f'customers/{id}', headers, expected_status_code)
         return delete_customer_res

@@ -16,11 +16,13 @@ class ProductsHelper(object):
         create_product_json = self.requests_utility.post('products', payload=payload, expected_status_code=201)
         return create_product_json
 
-    def update_product(self, product_id, payload=None):
-        return self.requests_utility.put(f'products/{product_id}', payload=payload)
+    def update_product(self, product_id, **kwargs):
+        payload = dict()
+        payload.update(kwargs)
+        update_product_json = self.requests_utility.put(f'products/{product_id}', payload=payload, expected_status_code=200)
+        return update_product_json
 
     def list_products(self, payload=None):
-
         max_pages = 1000
         all_products = []
         for i in range(1, max_pages + 1):

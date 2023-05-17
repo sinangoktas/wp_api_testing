@@ -11,7 +11,11 @@ class OrdersHelper(object):
         self.cur_file_dir = os.path.dirname(os.path.realpath(__file__))
         self.requests_utility = RequestsUtility()
 
-    # TODO do the order template fetching via method
+    def retrieve_order(self, order_id):
+        order_api_res = self.requests_utility.get(f"orders/{order_id}", expected_status_code=200)
+        return order_api_res
+
+    # TODO do the order template fetching via a method
     def create_order(self, additional_args=None):
 
         payload_template = os.path.join(self.cur_file_dir, '..', 'data', 'create_order_payload.json')
@@ -29,35 +33,23 @@ class OrdersHelper(object):
             payload.update(additional_args)
 
         res_api = self.requests_utility.post('orders', payload=payload, expected_status_code=201)
-
         return res_api
 
-
-    def update_order(self, order_id, **kwargs):
-
-        payload = dict()
-        payload.update(kwargs)
-
-        return self.requests_utility.put(f'orders/{order_id}', payload=payload)
-
-
-    def retrieve_order(self, order_id):
-        return self.requests_utility.get(f"orders/{order_id}")
-
-
     def create_order_payload(self, additional_args=None):
-
         payload_template = os.path.join(self.cur_file_dir, '..', 'data', 'create_order_payload.json')
-
         with open(payload_template) as f:
             payload = json.load(f)
-
         # If user adds more info to payload, then update it
         if additional_args:
             assert isinstance(additional_args, dict), "Parameter 'additional_args' must be a dictionary"
             payload.update(additional_args)
-
         return payload
+
+    def update_order(self, order_id, **kwargs):
+        payload = dict()
+        payload.update(kwargs)
+        update_order_json = self.requests_utility.put(f'orders/{order_id}', payload=payload, expected_status_code=200)
+        return update_order_json
 
 
     @staticmethod
@@ -73,7 +65,6 @@ class OrdersHelper(object):
         assert len(order_json['line_items']) == len(exp_products), f"Expected {len(exp_products)} item/s in order " \
                                                                    f"Actual: '{len(order_json['line_items'])}'" \
                                                                    f"Order id: {order_json['id']}."
-
         # Verify in DB
         order_id = order_json['id']
         item_info = orders_dao.get_order_table_data("woocommerce_order_items ", "order_id", order_id)
