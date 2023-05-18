@@ -72,7 +72,7 @@ class RequestsUtility(object):
         return self.res_json
 
 
-    def delete(self, endpoint, headers=None, expected_status_code=None):
+    def delete(self, endpoint, headers=None, expected_status_code=200):
         if not headers:
             headers = {"Content-Type": "application/json"}
 

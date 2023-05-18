@@ -122,8 +122,6 @@ def test_update_regular_price_should_update_price():
     assert rs_product['price'] == new_price, f"Price > Actual: {rs_product['price']}, Expected: {new_price}"
     assert rs_product['regular_price'] == new_price, f"'regular_price' > Actual: ={rs_product['price']}, Expected: {new_price}"
 
-
-# TODO add DB validation
 @pytest.mark.regression
 def test_adding_sale_price_should_set_on_sale_flag_true():
     """
@@ -135,6 +133,9 @@ def test_adding_sale_price_should_set_on_sale_flag_true():
     product_dao = ProductsDAO()
     rand_product = product_dao.get_random_products_that_are_not_on_sale(1)
     product_id = rand_product[0]['ID']
+
+    table_data_before = product_dao.get_product_table_data("wc_product_meta_lookup", "product_id", product_id)
+    assert table_data_before[0]['onsale'] == 0
 
     # first check the status is False to start with
     original_info = product_helper.retrieve_product(product_id)
@@ -148,6 +149,9 @@ def test_adding_sale_price_should_set_on_sale_flag_true():
     after_info = product_helper.retrieve_product(product_id)
     assert after_info['on_sale'], f"'on_sale' should have been set to True but found False"
     assert after_info['sale_price'] == str(sale_price), f"sale_price >> Expected: {sale_price}, Actual: {after_info['sale_price']}"
+
+    table_data_after = product_dao.get_product_table_data("wc_product_meta_lookup", "product_id", product_id)
+    assert table_data_after[0]['onsale'] == 1
 
 @pytest.mark.regression
 def test_update_on_sale_field_by_updating_sale_price():
@@ -212,7 +216,6 @@ def test_product_categories_validate_in_db():
     assert len(match_list) >= 1, f"There should be at least one category matches between api and db data for a product"
 
 
-@pytest.mark.regression
-# TODO Implement
+@pytest.mark.skip
 def test_delete_a_product_and_verify_deletion():
     pass

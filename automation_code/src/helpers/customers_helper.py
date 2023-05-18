@@ -3,6 +3,8 @@ from automation_code.src.utilities.requests_utility import RequestsUtility
 
 import base64
 import pdb
+import requests
+from automation_code.src.utilities.credentials_utility import CredentialsUtility
 
 class CustomerHelper(object):
 
@@ -29,16 +31,30 @@ class CustomerHelper(object):
         update_user_json = self.requests_utility.put(f'customers/{id}', payload=payload, expected_status_code=200)
         return update_user_json
 
-    def delete_customer(self, id, headers=None, expected_status_code=None):
-        if not expected_status_code:
-            expected_status_code = 200
+    # TODO del
+    # 501
+    # def delete_customer(self, id, headers=None):
+    # 401
+    def delete_customer(self, id):
+        # 401 Error
+        creds = CredentialsUtility()
+        params = creds.get_wc_api_keys()
+        res = self.requests_utility.delete(f'customers/{id}', headers=params)
+        print(res)
+        print(res['code'])
+        print(res['message'])
 
-        if not headers:
-            username = "sinang"
-            password = "sg024435X!"
-            headers = {
-                'Content-Type': 'application/json',
-                'Authorization': f'Basic {base64.b64encode(f"{username}:{password}".encode()).decode()}'
-            }
-        delete_customer_res = self.requests_utility.delete(f'customers/{id}', headers, expected_status_code)
-        return delete_customer_res
+        # 501 Error
+        # if not headers:
+        #     username = "sinang"
+        #     password = "sg024435X!"
+        #     headers = {
+        #         'Content-Type': 'application/json',
+        #         'Authorization': f'Basic {base64.b64encode(f"{username}:{password}".encode()).decode()}'
+        #     }
+        # res = self.requests_utility.delete(f'customers/{id}', headers=headers)
+        # print(res)
+        # print(res['code'])
+        # print(res['message'])
+
+

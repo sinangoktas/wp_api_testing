@@ -10,8 +10,7 @@ from automation_code.src.helpers.products_helper import ProductsHelper
 from automation_code.src.utilities.requests_utility import RequestsUtility
 from automation_code.src.utilities.generic_utility import generate_random_string
 
-# TODO think of how to incorporate this into a utility method that can be usable for all services
-# TODO And check if the new approach can deprecate the create_order_payload.json
+
 @pytest.fixture(scope='module')
 def my_orders_smoke_setup():
     product_dao = ProductsDAO()
@@ -146,9 +145,8 @@ def test_update_order_customer_note():
     assert new_order_info['customer_note'] == rand_string, f"Customer note >>>  Expected: {rand_string}, \
                                                                                 Actual: {new_order_info['customer_note']}"
 
-# TODO why is this called tear_down???
 @pytest.fixture(scope='module')
-def my_setup_teardown():
+def my_coupon_setup():
     # hard code a 50% coupon from wp_admin > woocommerce
     coupon_code = 'kecsetcid16'
     discount_pct = '50.00'
@@ -167,7 +165,7 @@ def my_setup_teardown():
     return info
 
 @pytest.mark.regression
-def test_apply_valid_coupon_to_order(my_setup_teardown):
+def test_apply_valid_coupon_to_order(my_coupon_setup):
     """
     Validates when x% coupon is applied to an order, the 'total' amount is reduced by x%
     """
@@ -175,15 +173,15 @@ def test_apply_valid_coupon_to_order(my_setup_teardown):
     # create payload and make call to create order
     order_helper = OrdersHelper()
     order_payload_addition = {
-        "line_items": [{"product_id": my_setup_teardown['product_id'], "quantity": 1}],
-        "coupon_lines": [{"code": my_setup_teardown['coupon_code']}],
+        "line_items": [{"product_id": my_coupon_setup['product_id'], "quantity": 1}],
+        "coupon_lines": [{"code": my_coupon_setup['coupon_code']}],
         "shipping_lines": [{"method_id": "flat_rate", "method_title": "Flat Rate", "total": "0.00"}]
     }
     res_order = order_helper.create_order(**order_payload_addition)
 
     # calculate expected total price based on coupon and product price
-    expected_total = float(my_setup_teardown['product_price']) \
-                     - (float(my_setup_teardown['product_price']) * (float(my_setup_teardown['discount_pct']) / 100))
+    expected_total = float(my_coupon_setup['product_price']) \
+                     - (float(my_coupon_setup['product_price']) * (float(my_coupon_setup['discount_pct']) / 100))
 
     # get total from order response and verify
     total = round(float(res_order['total']), 2)
@@ -228,7 +226,6 @@ def test_create_order_with_invalid_email(my_orders_smoke_setup):
     assert sales_count_before == sales_count_after, f"sales_count should not have changed"
 
 
-@pytest.mark.regression
-# TODO Implement
+@pytest.mark.skip
 def test_delete_an_order_and_verify_deletion():
     pass

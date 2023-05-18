@@ -101,12 +101,11 @@ def test_update_customer_details():
     assert first_name_after == rnd_first_name
     assert first_name_before != first_name_after, f"first_name >>> should have been updated with {rnd_first_name}"
 
-
-@pytest.mark.regression
-# TODO solve the authentication problem
+# TODO Needs investigating ... delete permission issue
+@pytest.mark.regression112
 def test_delete_an_existing_customer():
 
-    # create a customer so to delete
+    # create a customer
     customer_helper = CustomerHelper()
     customer = customer_helper.create_customer()
     customer_id = customer['id']
@@ -116,10 +115,10 @@ def test_delete_an_existing_customer():
     Response Json: {'code': 'woocommerce_rest_trash_not_supported', 'message': 'Customers do not support trashing.'
     """
     # delete the customer using api
-    customer_helper.delete_customer(customer_id, expected_status_code=501)
+    res = customer_helper.delete_customer(customer_id)
+    print(res['code'])
+    print(res['message'])
 
     # verify the deletion using api and also in db
 
-    return
-
-
+    assert 1 == 2, f"Done ........................"
