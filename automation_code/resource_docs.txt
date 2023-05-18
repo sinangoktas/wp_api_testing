@@ -1,0 +1,7 @@
+# run Local, open admin, shop
+# run mysql db (root)
+
+# http://wordpress.local/rest-api/docs/#/customers/delete_wc_v3_customers__id_
+# swagger ui can be opened from wp admin ui too
+
+# https://woocommerce.github.io/woocommerce-rest-api-docs/?python#list-all-products
