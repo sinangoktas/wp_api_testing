@@ -1,3 +1,14 @@
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+IMPL PYTEST FEATURES INCL MOCKING
+IMPL FEW INTEGRATION SCENARIOS
+IMPL DOCKERIZATION
+IMPL PYTEST REPORTING - EXTRACT FROM DOCKER
+IMPL DISABLE DB VALIDATIONS FOR DOCKER RUN
+IMPL LOCUST PERFORMANCE EVAL
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
 # run Local, open admin, shop
 # run mysql db (root, root)
 
@@ -9,12 +20,3 @@
 
 ===========================================
 
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-IMPL PYTEST FEATURES INCL MOCKING
-IMPL FEW INTEGRATION SCENARIOS
-IMPL DOCKERIZATION
-IMPL PYTEST REPORTING - EXTRACT FROM DOCKER
-IMPL DISABLE DB VALIDATIONS FOR DOCKER RUN
-IMPL LOCUST PERFORMANCE EVAL
-
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
