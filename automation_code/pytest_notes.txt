@@ -1,0 +1,16 @@
+Arrange
+Arrange is where we prepare everything for our test.
+============
+Act
+Act is the singular, state-changing action that kicks off the behavior we want to test.
+================
+Assert
+Assert is where we look at that resulting state and check if it looks how we’d expect after the dust has settled.
+=================
+Cleanup
+Cleanup is where the test picks up after itself, so other tests aren’t being accidentally influenced by it.
+=====================
+
+
+
+

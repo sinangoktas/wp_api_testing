@@ -1,22 +1,24 @@
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 IMPL PYTEST FEATURES INCL MOCKING
-IMPL FEW INTEGRATION SCENARIOS
+IMPL A FEW INTEGRATION SCENARIOS
 IMPL DOCKERIZATION
 IMPL PYTEST REPORTING - EXTRACT FROM DOCKER
 IMPL DISABLE DB VALIDATIONS FOR DOCKER RUN
 IMPL LOCUST PERFORMANCE EVAL
-
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
+
+
+
+
+===============================
+
 # run Local, open admin, shop
 # run mysql db (root, root)
-
 # http://wordpress.local/rest-api/docs/#/
 # swagger ui can be opened from wp admin ui
-
 # https://woocommerce.github.io/woocommerce-rest-api-docs/
-
 
 ===========================================
 
