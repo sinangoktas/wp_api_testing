@@ -1,22 +1,13 @@
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-IMPL PYTEST FEATURES INCL MOCKING
-IMPL A FEW INTEGRATION SCENARIOS
-IMPL DOCKERIZATION
-IMPL PYTEST REPORTING - EXTRACT FROM DOCKER
-IMPL DISABLE DB VALIDATIONS FOR DOCKER RUN
-IMPL LOCUST PERFORMANCE EVAL
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-
+========================
 Arrange
 Arrange is where we prepare everything for our test.
-============
+
 Act
 Act is the singular, state-changing action that kicks off the behavior we want to test.
-================
+
 Assert
 Assert is where we look at that resulting state and check if it looks how we’d expect after the dust has settled.
-=================
+
 Cleanup
 Cleanup is where the test picks up after itself, so other tests aren’t being accidentally influenced by it.
 =====================
@@ -25,13 +16,24 @@ Cleanup is where the test picks up after itself, so other tests aren’t being a
 https://docs.pytest.org/en/7.1.x/how-to/index.html
 
 
-===============================
+=============================
+IMPL PYTEST FEATURES INCL MOCKING
 
-# run Local, open admin, shop
+IMPL A FEW INTEGRATION SCENARIOS
+IMPL DOCKERIZATION
+IMPL PYTEST REPORTING - EXTRACT FROM DOCKER
+IMPL DISABLE DB VALIDATIONS FOR DOCKER RUN
+IMPL LOCUST PERFORMANCE EVAL
+======================================
+
+
+===============================
+HOW TO RUN THE WP APP
+
+# run Local, open admin and shop
 # run mysql db (root, root)
 # http://wordpress.local/rest-api/docs/#/
-# swagger ui can be opened from wp admin ui
+# Swagger ui can be opened from wp admin ui
 # https://woocommerce.github.io/woocommerce-rest-api-docs/
-
 ===========================================
 
