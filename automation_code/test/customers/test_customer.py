@@ -9,6 +9,8 @@ from automation_code.src.helpers.customers_helper import CustomerHelper
 from automation_code.src.dao.customers_dao import CustomersDAO
 from automation_code.src.utilities.requests_utility import RequestsUtility
 
+pytestmark = pytest.mark.customer
+
 
 @pytest.mark.smoke
 def test_retrieve_all_customers():
@@ -102,7 +104,8 @@ def test_update_customer_details():
     assert first_name_before != first_name_after, f"first_name >>> should have been updated with {rnd_first_name}"
 
 # TODO Needs investigating ... delete permission issue
-@pytest.mark.regression112
+@pytest.mark.skip
+@pytest.mark.regression
 def test_delete_an_existing_customer():
 
     # create a customer

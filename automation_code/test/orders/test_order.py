@@ -10,6 +10,8 @@ from automation_code.src.helpers.products_helper import ProductsHelper
 from automation_code.src.utilities.requests_utility import RequestsUtility
 from automation_code.src.utilities.generic_utility import generate_random_string
 
+pytestmark = pytest.mark.order
+
 
 @pytest.fixture(scope='module')
 def my_orders_smoke_setup():

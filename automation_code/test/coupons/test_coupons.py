@@ -6,7 +6,7 @@ import pytest
 import random
 import logging as logger
 
-pytest_mark = [pytest.mark.gregression, pytest.mark.coupons]
+pytestmark = [pytest.mark.regression, pytest.mark.coupons]
 
 
 @pytest.fixture(scope='module')

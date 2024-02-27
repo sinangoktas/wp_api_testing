@@ -8,6 +8,8 @@ from automation_code.src.dao.products_dao import ProductsDAO
 from automation_code.src.helpers.products_helper import ProductsHelper
 from automation_code.src.utilities.generic_utility import generate_random_string
 
+pytestmark = pytest.mark.product
+
 
 @pytest.mark.smoke
 def test_get_all_products():
@@ -153,6 +155,7 @@ def test_adding_sale_price_should_set_on_sale_flag_true():
     table_data_after = product_dao.get_product_table_data("wc_product_meta_lookup", "product_id", product_id)
     assert table_data_after[0]['onsale'] == 1
 
+
 @pytest.mark.regression
 def test_update_on_sale_field_by_updating_sale_price():
     """
@@ -194,7 +197,6 @@ def test_update_on_sale_field_by_updating_sale_price():
     product_name_db = product_dao.get_product_table_data("posts", "ID", product_id)[0]['post_title']
 
     assert product_name_api == product_name_db
-
 
 @pytest.mark.regression
 def test_product_categories_validate_in_db():

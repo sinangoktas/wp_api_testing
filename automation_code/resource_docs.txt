@@ -13,16 +13,21 @@ Cleanup is where the test picks up after itself, so other tests aren’t being a
 =====================
 
 
-https://docs.pytest.org/en/7.1.x/how-to/index.html
-
-
 =============================
-IMPL PYTEST FEATURES INCL MOCKING
+IMPL A COUPLE OF FITURE IDEAS
+IMPL A COUPLE OF PYDANTIC MODELLING
 
-IMPL A FEW INTEGRATION SCENARIOS
+SOLVE HTTPS DELETE PROBLEM
+
+IMPL INTEGRATION SCENARIOS
+PARAMETERIZATION
+MARKING,SKIP AND XFAIL
+
 IMPL DOCKERIZATION
-IMPL PYTEST REPORTING - EXTRACT FROM DOCKER
 IMPL DISABLE DB VALIDATIONS FOR DOCKER RUN
+
+IMPL PYTEST REPORTING - EXTRACT FROM DOCKER
+
 IMPL LOCUST PERFORMANCE EVAL
 ======================================
 
@@ -36,4 +41,19 @@ HOW TO RUN THE WP APP
 # Swagger ui can be opened from wp admin ui
 # https://woocommerce.github.io/woocommerce-rest-api-docs/
 ===========================================
+
+
+https://docs.pytest.org/en/7.1.x/how-to/index.html
+
+
+
+################################
+
+To get a list of the slowest 10 test durations over 1.0s long:
+
+pytest --durations=10 --durations-min=1.0
+
+By default, pytest will not show test durations that are too small (<0.005s) unless -vv is passed on the command-line.
+
+###################################
 
