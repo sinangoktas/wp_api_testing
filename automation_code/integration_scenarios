@@ -1,6 +1,6 @@
 
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-INTEGRATION SCENARIOS > SOFT_CRAFT
+INTEGRATION SCENARIOS
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 Create a new product, add it to an order, and verify that the order contains the correct product information.

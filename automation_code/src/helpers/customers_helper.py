@@ -31,30 +31,20 @@ class CustomerHelper(object):
         update_user_json = self.requests_utility.put(f'customers/{id}', payload=payload, expected_status_code=200)
         return update_user_json
 
-    # TODO del
-    # 501
-    # def delete_customer(self, id, headers=None):
-    # 401
     def delete_customer(self, id):
         # 401 Error
-        creds = CredentialsUtility()
-        params = creds.get_wc_api_keys()
-        res = self.requests_utility.delete(f'customers/{id}', headers=params)
-        print(res)
-        print(res['code'])
-        print(res['message'])
+        # creds = CredentialsUtility()
+        # params = creds.get_wc_api_keys()
+        # res = self.requests_utility.delete(f'customers/{id}', headers=params)
 
         # 501 Error
-        # if not headers:
-        #     username = "sinang"
-        #     password = "sg024435X!"
-        #     headers = {
-        #         'Content-Type': 'application/json',
-        #         'Authorization': f'Basic {base64.b64encode(f"{username}:{password}".encode()).decode()}'
-        #     }
-        # res = self.requests_utility.delete(f'customers/{id}', headers=headers)
-        # print(res)
-        # print(res['code'])
-        # print(res['message'])
+        username = "sinang"
+        password = "sg024435X!"
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Basic {base64.b64encode(f"{username}:{password}".encode()).decode()}'
+        }
+
+        self.requests_utility.delete(f'customers/{id}', headers=headers)
 
 
