@@ -6,14 +6,15 @@ class ProductsHelper(object):
     def __init__(self):
         self.requests_utility = RequestsUtility()
 
-    def retrieve_product(self, product_id):
-        product_api_res = self.requests_utility.get(f'products/{product_id}', expected_status_code=200)
+    def retrieve_product(self, product_id=None, expected_status_code=200):
+        product_api_res = self.requests_utility.get(f'products/{product_id}',
+                                                    expected_status_code=expected_status_code)
         return product_api_res
 
-    def create_product(self, **kwargs):
-        payload = dict()
-        payload.update(kwargs)
-        create_product_json = self.requests_utility.post('products', payload=payload, expected_status_code=201)
+    def create_product(self, payload=None, expected_status_code=201):
+        create_product_json = self.requests_utility.post('products',
+                                                         payload=payload,
+                                                         expected_status_code=expected_status_code)
         return create_product_json
 
     def update_product(self, product_id, **kwargs):

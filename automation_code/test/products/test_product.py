@@ -27,7 +27,7 @@ def test_get_product_by_id():
 
     # retrieve the product from api
     product_helper = ProductsHelper()
-    res_api = product_helper.retrieve_product(rand_product_id)
+    res_api = product_helper.retrieve_product(product_id=rand_product_id)
     api_name = res_api['name']
 
     # verify that names matches in api and db
@@ -42,7 +42,7 @@ def test_create_a_simple_product():
                        }
 
     # create the product using api
-    product_res = ProductsHelper().create_product(**additional_args)
+    product_res = ProductsHelper().create_product(payload=additional_args)
 
     # verify that response is not empty
     assert product_res, f"Create product api response is empty. Payload: {additional_args}"
@@ -68,7 +68,7 @@ def test_list_products_with_filter_after():
     # retrieve the products applying filter
     payload = dict()
     payload['after'] = after_created_date
-    res_api = ProductsHelper().list_products(payload)
+    res_api = ProductsHelper().list_products(payload=payload)
     assert res_api, f"Empty response for 'list products with filer"
 
     # get data from db for the same filter value
@@ -89,6 +89,7 @@ def test_list_products_with_filter_after():
 # does not update the 'price'. So get a bunch of products and loop until you find one that is not on sale. If all in
 # the list are on sale then take random one and update the sale price
 @pytest.mark.regression
+@pytest.mark.sg112
 def test_update_regular_price_should_update_price():
     """
     Verifies updating the 'regular_price' field should automatically update the 'price' field.

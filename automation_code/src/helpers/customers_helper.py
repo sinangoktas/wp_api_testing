@@ -11,24 +11,21 @@ class CustomerHelper(object):
     def __init__(self):
         self.requests_utility = RequestsUtility()
 
-    def retrieve_customer(self, id):
-        customer_api_res = self.requests_utility.get(f'customers/{id}', expected_status_code=200)
+    def retrieve_customer(self, id=None, expected_status_code=200):
+        customer_api_res = self.requests_utility.get(f'customers/{id}',
+                                                     expected_status_code=expected_status_code)
         return customer_api_res
 
-    def create_customer(self, email=None, **kwargs):
-        payload = dict()
-        if not email:
-            credentials = generic_utility.generate_random_email_and_password()
-            email = credentials['email']
-        payload['email'] = email
-        payload.update(kwargs)
-        create_user_json = self.requests_utility.post('customers', payload=payload, expected_status_code=201)
+    def create_customer(self, payload=None, expected_status_code=201):
+        create_user_json = self.requests_utility.post('customers',
+                                                      payload=payload,
+                                                      expected_status_code=expected_status_code)
         return create_user_json
 
-    def update_customer(self, id, **kwargs):
-        payload = dict()
-        payload.update(kwargs)
-        update_user_json = self.requests_utility.put(f'customers/{id}', payload=payload, expected_status_code=200)
+    def update_customer(self, id=None, payload=None, expected_status_code=200):
+        update_user_json = self.requests_utility.put(f'customers/{id}',
+                                                     payload=payload,
+                                                     expected_status_code=expected_status_code)
         return update_user_json
 
     def delete_customer(self, id):

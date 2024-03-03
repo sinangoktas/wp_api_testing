@@ -27,13 +27,13 @@ def test_create_customer_only_email_password():
 
     # create user's credentials
     user_info = generic_utility.generate_random_email_and_password()
-    email = user_info['email']
-
     # make the api call to create the user
+    payload = dict()
+    payload.update(user_info)
     customer_obj = CustomerHelper()
-    customer_api_info = customer_obj.create_customer(email=email)
-
+    customer_api_info = customer_obj.create_customer(payload=payload)
     # verify email and first name in the response
+    email = user_info['email']
     assert customer_api_info['email'] == email, f"Create customer api return wrong email. Email: {email}"
 
     # verify customer is created in database
@@ -55,7 +55,7 @@ def test_retrieve_customer_by_id():
 
     # retrieve the customer from api
     customer_helper = CustomerHelper()
-    sample_customer_api = customer_helper.retrieve_customer(sample_customer_id)
+    sample_customer_api = customer_helper.retrieve_customer(id=sample_customer_id)
 
     # verify that details match
     assert sample_customer_db[0]['user_email'] == sample_customer_api['email'], f"Emails does not match between db and api data. " \
@@ -64,15 +64,16 @@ def test_retrieve_customer_by_id():
 
 @pytest.mark.regression
 def test_create_customer_fails_existing_email():
-    # get existing email from db
+    customer_helper = CustomerHelper()
     customer_dao = CustomersDAO()
+
+    # get existing email from db
     existing_cust = customer_dao.get_random_customer_from_db("users")
     existing_email = existing_cust[0]['user_email']
 
     # make the api call to create a customer with an existing email
-    req_utility = RequestsUtility()
     payload = {"email": existing_email, "password": "Password1"}
-    customer_api = req_utility.post(endpoint='customers', payload=payload, expected_status_code=400)
+    customer_api = customer_helper.create_customer(payload=payload, expected_status_code=400)
 
     # verify the error code
     assert customer_api['code'] == 'registration-error-email-exists', f"Expected error code: 'registration-error-email-exists'" \
@@ -93,7 +94,9 @@ def test_update_customer_details():
     # update the customer details using api
     customer_helper = CustomerHelper()
     rnd_first_name = ''.join(random.choices(string.ascii_lowercase, k=10))
-    customer_helper.update_customer(customer_id, first_name=rnd_first_name)
+    payload = dict()
+    payload['first_name'] = rnd_first_name
+    customer_helper.update_customer(id=customer_id, payload=payload)
 
     # get the users first_name in customer_lookup table again
     customer_db_after = customer_dao.get_customer_table_data("wc_customer_lookup", "user_id", customer_id)
