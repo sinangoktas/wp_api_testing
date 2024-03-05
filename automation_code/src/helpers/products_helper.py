@@ -17,10 +17,10 @@ class ProductsHelper(object):
                                                          expected_status_code=expected_status_code)
         return create_product_json
 
-    def update_product(self, product_id, **kwargs):
-        payload = dict()
-        payload.update(kwargs)
-        update_product_json = self.requests_utility.put(f'products/{product_id}', payload=payload, expected_status_code=200)
+    def update_product(self, product_id=None, payload=None, expected_status_code=200):
+        update_product_json = self.requests_utility.put(f'products/{product_id}',
+                                                        payload=payload,
+                                                        expected_status_code=expected_status_code)
         return update_product_json
 
     def list_products(self, payload=None):

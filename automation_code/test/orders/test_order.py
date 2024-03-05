@@ -7,6 +7,7 @@ from automation_code.src.dao.orders_dao import OrdersDAO
 from automation_code.src.helpers.orders_helper import OrdersHelper
 from automation_code.src.helpers.customers_helper import CustomerHelper
 from automation_code.src.helpers.products_helper import ProductsHelper
+from automation_code.src.utilities import generic_utility
 from automation_code.src.utilities.requests_utility import RequestsUtility
 from automation_code.src.utilities.generic_utility import generate_random_string
 
@@ -40,7 +41,8 @@ def test_create_paid_order_guest_user(my_orders_smoke_setup):
             "quantity": 1
         }
     ]}
-    order_json = order_helper.create_order(**info)
+    template_order = order_helper.create_order_payload(additional_args=info)
+    order_json = order_helper.create_order(payload=template_order)
 
     # Verify the response
     expected_products = [{'product_id': product_id}]
@@ -54,7 +56,8 @@ def test_create_paid_order_registered_customer(my_orders_smoke_setup):
     customer_helper = CustomerHelper()
 
     # prepare for the order: customer and product
-    cust_info = customer_helper.create_customer()
+    user_data = generic_utility.generate_random_email_and_password()
+    cust_info = customer_helper.create_customer(payload=user_data)
     customer_id = cust_info['id']
     product_id = my_orders_smoke_setup['product_id']
 
@@ -66,13 +69,14 @@ def test_create_paid_order_registered_customer(my_orders_smoke_setup):
     ],
         "customer_id": customer_id
     }
-    order_json = order_helper.create_order(**info)
+    template_order = order_helper.create_order_payload(additional_args=info)
+    order_json = order_helper.create_order(payload=template_order)
 
     # # verify response
     expected_products = [{'product_id': product_id}]
     order_helper.verify_order_is_created(order_json, customer_id, expected_products)
 
-
+@pytest.mark.sg112
 @pytest.mark.parametrize("new_status",
                          [
                              pytest.param('cancelled', marks=[pytest.mark.tcid_u1, pytest.mark.regression]),

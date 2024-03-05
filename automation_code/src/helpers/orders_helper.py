@@ -15,12 +15,10 @@ class OrdersHelper(object):
         order_api_res = self.requests_utility.get(f"orders/{order_id}", expected_status_code=200)
         return order_api_res
 
-    def create_order(self, **kwargs):
-        payload = dict()
-        template_order = OrdersHelper.create_order_payload(self)
-        payload.update(template_order)
-        payload.update(kwargs)
-        create_order_json = self.requests_utility.post('orders', payload=payload, expected_status_code=201)
+    def create_order(self, payload=None, expected_status_code=201):
+        create_order_json = self.requests_utility.post('orders',
+                                                       payload=payload,
+                                                       expected_status_code=expected_status_code)
         return create_order_json
 
     def create_order_payload(self, additional_args=None):
