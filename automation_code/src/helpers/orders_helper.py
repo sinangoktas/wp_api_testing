@@ -11,8 +11,9 @@ class OrdersHelper(object):
         self.cur_file_dir = os.path.dirname(os.path.realpath(__file__))
         self.requests_utility = RequestsUtility()
 
-    def retrieve_order(self, order_id):
-        order_api_res = self.requests_utility.get(f"orders/{order_id}", expected_status_code=200)
+    def retrieve_order(self, order_id=None, expected_status_code=200):
+        order_api_res = self.requests_utility.get(f"orders/{order_id}",
+                                                  expected_status_code=expected_status_code)
         return order_api_res
 
     def create_order(self, payload=None, expected_status_code=201):
@@ -31,10 +32,10 @@ class OrdersHelper(object):
             payload.update(additional_args)
         return payload
 
-    def update_order(self, order_id, **kwargs):
-        payload = dict()
-        payload.update(kwargs)
-        update_order_json = self.requests_utility.put(f'orders/{order_id}', payload=payload, expected_status_code=200)
+    def update_order(self, order_id=None, payload=None, expected_status_code=200):
+        update_order_json = self.requests_utility.put(f'orders/{order_id}',
+                                                      payload=payload,
+                                                      expected_status_code=expected_status_code)
         return update_order_json
 
     @staticmethod

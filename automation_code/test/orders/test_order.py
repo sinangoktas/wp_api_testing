@@ -76,7 +76,6 @@ def test_create_paid_order_registered_customer(my_orders_smoke_setup):
     expected_products = [{'product_id': product_id}]
     order_helper.verify_order_is_created(order_json, customer_id, expected_products)
 
-@pytest.mark.sg112
 @pytest.mark.parametrize("new_status",
                          [
                              pytest.param('cancelled', marks=[pytest.mark.tcid_u1, pytest.mark.regression]),
@@ -87,10 +86,12 @@ def test_update_order_status(new_status):
     # create a new order
     order_helper = OrdersHelper()
     order_dao = OrdersDAO()
-    order_json = order_helper.create_order()
+    template_order = order_helper.create_order_payload()
+    order_json = order_helper.create_order(payload=template_order)
     curr_status = order_json['status']
 
-    status_list = ['auto-draft', 'pending', 'processing', 'on-hold', 'completed', 'cancelled', 'refunded', 'failed', 'checkout-draft']
+    status_list = ['auto-draft', 'pending', 'processing', 'on-hold', 'completed',
+                   'cancelled', 'refunded', 'failed', 'checkout-draft']
     if curr_status == new_status:
         new_status = [s for s in status_list if s != curr_status][0]
 
@@ -103,13 +104,15 @@ def test_update_order_status(new_status):
     assert order_db_status_before[0]['post_status'] == f"wc-{curr_status}"
 
     # update the status
-    order_helper.update_order(order_id, status=new_status)
+    payload = {"status": new_status}
+    order_helper.update_order(order_id=order_id, payload=payload)
 
     # get order information
-    order_after_update = order_helper.retrieve_order(order_id)
+    order_after_update = order_helper.retrieve_order(order_id=order_id)
 
     # verify new orders status
-    assert order_after_update['status'] == new_status, f"status >>> Expected: '{new_status} Actual: {order_after_update['status']}'"
+    assert order_after_update['status'] == new_status, \
+        f"status >>> Expected: '{new_status} Actual: {order_after_update['status']}'"
 
     # verify that order status updated in db
     order_db_status_after = order_dao.get_order_table_data("posts", "ID", order_id)
@@ -117,6 +120,7 @@ def test_update_order_status(new_status):
 
 
 @pytest.mark.regression
+@pytest.mark.sg112
 def test_update_order_status_to_an_invalid_value():
     new_status = 'invalid_status'
 
