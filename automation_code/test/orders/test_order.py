@@ -120,35 +120,34 @@ def test_update_order_status(new_status):
 
 
 @pytest.mark.regression
-@pytest.mark.sg112
 def test_update_order_status_to_an_invalid_value():
     new_status = 'invalid_status'
 
     # create new order
     order_helper = OrdersHelper()
-    order_json = order_helper.create_order()
+    template_order = order_helper.create_order_payload()
+    order_json = order_helper.create_order(payload=template_order)
     order_id = order_json['id']
 
     # update the status
     payload = {"status": new_status}
-    request_utility = RequestsUtility()
-    res_api = request_utility.put(f"orders/{order_id}", payload=payload, expected_status_code=400)
+    res_api = order_helper.update_order(order_id, payload=payload, expected_status_code=400)
 
     assert res_api['code'] == 'rest_invalid_param', f"Code >>> Expected: 'rest_invalid_param' Actual: {res_api['code']}"
     assert res_api['message'] == 'Invalid parameter(s): status', f"Message >>> Expected: 'rest_invalid_param' Actual: {res_api['message']}"
-
 
 @pytest.mark.regression
 def test_update_order_customer_note():
     # create a new order
     order_helper = OrdersHelper()
-    order_json = order_helper.create_order()
+    template_order = order_helper.create_order_payload()
+    order_json = order_helper.create_order(payload=template_order)
     order_id = order_json['id']
 
     # update order with a customer note
     rand_string = generate_random_string(40)
     info = {"customer_note": rand_string}
-    order_helper.update_order(order_id, **info)
+    order_helper.update_order(order_id, payload=info)
 
     # # verify the note in the order info api
     new_order_info = order_helper.retrieve_order(order_id)
@@ -162,7 +161,8 @@ def my_coupon_setup():
     discount_pct = '50.00'
 
     # get a random product for order
-    rand_products = ProductsHelper().list_products()
+    product_helper = ProductsHelper()
+    rand_products = product_helper.list_products()
     rand_product = random.choice(rand_products)
 
     info = dict()
@@ -187,7 +187,11 @@ def test_apply_valid_coupon_to_order(my_coupon_setup):
         "coupon_lines": [{"code": my_coupon_setup['coupon_code']}],
         "shipping_lines": [{"method_id": "flat_rate", "method_title": "Flat Rate", "total": "0.00"}]
     }
-    res_order = order_helper.create_order(**order_payload_addition)
+    template_order = order_helper.create_order_payload()
+    payload = dict()
+    payload.update(template_order)
+    payload.update(order_payload_addition)
+    res_order = order_helper.create_order(payload=payload)
 
     # calculate expected total price based on coupon and product price
     expected_total = float(my_coupon_setup['product_price']) \
@@ -199,6 +203,7 @@ def test_apply_valid_coupon_to_order(my_coupon_setup):
 
     assert total == expected_total, f"Order total after applying coupon >>> Expected cost: {expected_total}, Actual: {total}"
 
+@pytest.mark.sg112
 @pytest.mark.regression
 def test_create_order_with_invalid_email(my_orders_smoke_setup):
     order_helper = my_orders_smoke_setup['order_helper']
@@ -221,8 +226,8 @@ def test_create_order_with_invalid_email(my_orders_smoke_setup):
 
     # create the order payload and make the call
     payload = order_helper.create_order_payload(additional_args=info)
-    requests_utility = RequestsUtility()
-    res_api = requests_utility.post('orders', payload=payload, expected_status_code=400)
+    res_api = order_helper.create_order(payload=payload, expected_status_code=400)
+
 
     assert res_api['code'] == "rest_invalid_param", f"Response code >>> Expected: rest_invalid_param, " \
                                                     f"Actual: {res_api['code']}"
