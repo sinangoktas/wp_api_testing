@@ -8,14 +8,6 @@ import logging as logger
 
 pytestmark = [pytest.mark.regression, pytest.mark.coupons]
 
-
-@pytest.fixture(scope='module')
-def my_setup():
-    info = {'coupon_helper': CouponsHelper()}
-
-    return info
-
-
 @pytest.mark.parametrize("discount_type",
                          [
                              pytest.param(None, marks=[pytest.mark.tcid_c1, pytest.mark.smoke]),

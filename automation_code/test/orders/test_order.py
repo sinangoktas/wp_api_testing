@@ -14,18 +14,6 @@ from automation_code.src.utilities.generic_utility import generate_random_string
 pytestmark = pytest.mark.order
 
 
-@pytest.fixture(scope='module')
-def my_orders_smoke_setup():
-    product_dao = ProductsDAO()
-    rand_product = product_dao.get_random_product_from_db("posts")
-    product_id = rand_product[0]['ID']
-    order_helper = OrdersHelper()
-    info = {'product_id': product_id,
-            'order_helper': order_helper}
-
-    return info
-
-
 @pytest.mark.smoke
 def test_create_paid_order_guest_user(my_orders_smoke_setup):
     order_helper = my_orders_smoke_setup['order_helper']
@@ -154,26 +142,6 @@ def test_update_order_customer_note():
     assert new_order_info['customer_note'] == rand_string, f"Customer note >>>  Expected: {rand_string}, \
                                                                                 Actual: {new_order_info['customer_note']}"
 
-@pytest.fixture(scope='module')
-def my_coupon_setup():
-    # hard code a 50% coupon from wp_admin > woocommerce
-    coupon_code = 'kecsetcid16'
-    discount_pct = '50.00'
-
-    # get a random product for order
-    product_helper = ProductsHelper()
-    rand_products = product_helper.list_products()
-    rand_product = random.choice(rand_products)
-
-    info = dict()
-    info['order_helper'] = OrdersHelper()
-    info['coupon_code'] = coupon_code
-    info['discount_pct'] = discount_pct
-    info['product_id'] = rand_product['id']
-    info['product_price'] = rand_product['price']
-
-    return info
-
 @pytest.mark.regression
 def test_apply_valid_coupon_to_order(my_coupon_setup):
     """
@@ -203,7 +171,6 @@ def test_apply_valid_coupon_to_order(my_coupon_setup):
 
     assert total == expected_total, f"Order total after applying coupon >>> Expected cost: {expected_total}, Actual: {total}"
 
-@pytest.mark.sg112
 @pytest.mark.regression
 def test_create_order_with_invalid_email(my_orders_smoke_setup):
     order_helper = my_orders_smoke_setup['order_helper']

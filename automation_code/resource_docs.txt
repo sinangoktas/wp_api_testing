@@ -12,12 +12,12 @@ Cleanup
 Cleanup is where the test picks up after itself, so other tests aren’t being accidentally influenced by it.
 
 
-=====================
-SESSION TESTS - FIXTURE/s
+==================
+FIXTURES (da0 -> random_item, table_data)
 
 IMPL INTEGRATION SCENARIOS
-FIXTURES (da0 -> random_item, table_data)
-PARAMETERIZATION
+IMPL SESSION FIXTURES
+IMPR PARAMETERIZATION
 MARKING,SKIP AND XFAIL
 
 IMPL DOCKERIZATION
@@ -28,8 +28,8 @@ IMPL LOCUST PERFORMANCE EVAL
 
 https://docs.pytest.org/en/7.1.x/how-to/index.html
 
-==================================
-HOW TO RUN THE WP APP
+============================
+RUN THE WP APP
 
 # run Local, open admin and shop
 # run mysql db (root, root)
