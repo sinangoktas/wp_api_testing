@@ -13,6 +13,7 @@ class CustomersDAO(object):
         sql = f'''SELECT * FROM {self.db_utility.database}.{self.db_utility.table_prefix}_{table} LIMIT 1000;'''
 
         res_sql = self.db_utility.execute_select(sql)
+
         return random.sample(res_sql, int(qty))
 
 
@@ -20,4 +21,5 @@ class CustomersDAO(object):
 
         sql = f'''SELECT * FROM {self.db_utility.database}.{self.db_utility.table_prefix}_{table}
                           WHERE {attr} = {value};'''
+
         return self.db_utility.execute_select(sql)

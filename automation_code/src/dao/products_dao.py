@@ -9,7 +9,9 @@ class ProductsDAO(object):
     def get_random_product_from_db(self, table, qty=1):
 
         sql = f'''SELECT * FROM {self.db_utility.database}.{self.db_utility.table_prefix}_{table} WHERE post_type = "product" LIMIT 1000;'''
+
         res_sql = self.db_utility.execute_select(sql)
+
         return random.sample(res_sql, int(qty))
 
 

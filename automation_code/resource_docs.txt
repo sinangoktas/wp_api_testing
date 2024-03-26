@@ -13,8 +13,6 @@ Cleanup is where the test picks up after itself, so other tests aren’t being a
 
 
 ==================
-FIXTURES (da0 -> random_item, table_data)
-
 IMPL INTEGRATION SCENARIOS
 IMPL SESSION FIXTURES
 IMPR PARAMETERIZATION
