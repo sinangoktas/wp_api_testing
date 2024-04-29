@@ -6,6 +6,7 @@ from automation_code.src.dao.products_dao import ProductsDAO
 from automation_code.src.helpers.orders_helper import OrdersHelper
 from automation_code.src.helpers.products_helper import ProductsHelper
 from automation_code.src.helpers.coupons_helper import CouponsHelper
+from automation_code.src.utilities.requests_utility import RequestsUtility
 
 
 @pytest.fixture(scope='module')
@@ -48,7 +49,7 @@ def my_setup():
 
 
 @pytest.fixture(scope="session")
-def api_client():
+def api_client_example():
     """Fixture to authenticate and return an API session."""
     session = requests.Session()
 
@@ -66,4 +67,9 @@ def api_client():
         pytest.fail("Authentication failed. Can't proceed with tests.")
 
 
-# session utility
+
+# Fixture to use explicit session testing
+@pytest.fixture(scope="module")
+def api_client():
+    session = RequestsUtility()
+    return session
