@@ -45,10 +45,11 @@ def test_create_a_simple_product():
     product_res = ProductsHelper().create_product(payload=additional_args)
 
     # verify that response is not empty
-    assert product_res, f"Create product api response is empty. Payload: {additional_args}"
-    assert product_res['name'] == additional_args['name'], f"Product name >>> " \
-                                                           f"Expected: {additional_args['name']}, " \
-                                                           f"Actual: {product_res['name']}"
+    assert product_res, \
+        f"Create product api response is empty. Payload: {additional_args}"
+
+    assert product_res['name'] == additional_args['name'], \
+        f"Product name >>> Expected: {additional_args['name']}, Actual: {product_res['name']}"
 
     # verify that product exists in db
     product_id = product_res['id']
@@ -69,20 +70,21 @@ def test_list_products_with_filter_after():
     payload = dict()
     payload['after'] = after_created_date
     res_api = ProductsHelper().list_products(payload=payload)
-    assert res_api, f"Empty response for 'list products with filer"
+    assert res_api, \
+        f"Empty response for 'list products with filer"
 
     # get data from db for the same filter value
     db_products = ProductsDAO().get_products_created_after_given_date(after_created_date)
 
     # verify that api response matches db data
-    assert len(res_api) == len(
-        db_products), f"Products count after filter applied >>> Expected: {len(db_products)}, Actual: {len(res_api)}"
+    assert len(res_api) == len(db_products), \
+        f"Products count after filter applied >>> Expected: {len(db_products)}, Actual: {len(res_api)}"
 
     ids_in_api = [i['id'] for i in res_api]
     ids_in_db = [i['ID'] for i in db_products]
-
     ids_diff = list(set(ids_in_api) - set(ids_in_db))
-    assert not ids_diff, f"Product ids are different in api response and db"
+    assert not ids_diff, \
+        f"Product ids are different in api response and db"
 
 
 # for this test the 'sale_price' of the product must be empty. If product has sale price, updating the 'regular_price'
@@ -118,13 +120,19 @@ def test_update_regular_price_should_update_price():
     res_update = product_helper.update_product(product_id=product_id, payload=payload)
 
     # verify the response has the 'price' and 'regular_price' has updated and 'sale_price' is not updated
-    assert res_update['price'] == new_price, f"Price > Actual: {res_update['price']}, Expected: {new_price}"
-    assert res_update['regular_price'] == new_price, f"'regular_price' > Actual: ={res_update['price']}, Expected: {new_price}"
+    assert res_update['price'] == new_price, \
+        f"Price > Actual: {res_update['price']}, Expected: {new_price}"
+
+    assert res_update['regular_price'] == new_price, \
+        f"'regular_price' > Actual: ={res_update['price']}, Expected: {new_price}"
 
     # get the product after the update and verify response
     rs_product = product_helper.retrieve_product(product_id)
-    assert rs_product['price'] == new_price, f"Price > Actual: {rs_product['price']}, Expected: {new_price}"
-    assert rs_product['regular_price'] == new_price, f"'regular_price' > Actual: ={rs_product['price']}, Expected: {new_price}"
+    assert rs_product['price'] == new_price, \
+        f"Price > Actual: {rs_product['price']}, Expected: {new_price}"
+
+    assert rs_product['regular_price'] == new_price, \
+        f"'regular_price' > Actual: ={rs_product['price']}, Expected: {new_price}"
 
 @pytest.mark.regression
 def test_adding_sale_price_should_set_on_sale_flag_true():
@@ -143,8 +151,10 @@ def test_adding_sale_price_should_set_on_sale_flag_true():
 
     # first check the status is False to start with
     original_info = product_helper.retrieve_product(product_id=product_id)
-    assert not original_info['on_sale'], "Product should not be on_sale already"
-    assert original_info['regular_price'], "regular_price should not be empty"
+    assert not original_info['on_sale'], \
+        "Product should not be on_sale already"
+    assert original_info['regular_price'], \
+        "regular_price should not be empty"
 
     sale_price = round(float(original_info['regular_price']) * 0.75, 2)
     payload = {'sale_price': str(sale_price)}
@@ -152,8 +162,11 @@ def test_adding_sale_price_should_set_on_sale_flag_true():
 
     # get the product sale price is updated
     after_info = product_helper.retrieve_product(product_id=product_id)
-    assert after_info['on_sale'], f"'on_sale' should have been set to True but found False"
-    assert after_info['sale_price'] == str(sale_price), f"sale_price >> Expected: {sale_price}, Actual: {after_info['sale_price']}"
+    assert after_info['on_sale'], \
+        f"'on_sale' should have been set to True but found False"
+
+    assert after_info['sale_price'] == str(sale_price), \
+        f"sale_price >> Expected: {sale_price}, Actual: {after_info['sale_price']}"
 
     table_data_after = product_dao.get_product_table_data("wc_product_meta_lookup", "product_id", product_id)
     assert table_data_after[0]['onsale'] == 1
@@ -179,21 +192,26 @@ def test_update_on_sale_field_by_updating_sale_price():
 
     product_info = product_helper.create_product(payload=payload)
     product_id = product_info['id']
-    assert not product_info['on_sale'], f"'on_sale' should have value False for Newly created product"
-    assert not product_info['sale_price'], f"'sale_price' should have no value for Newly created product"
+    assert not product_info['on_sale'], \
+        f"'on_sale' should have value False for Newly created product"
+
+    assert not product_info['sale_price'], \
+        f"'sale_price' should have no value for Newly created product"
 
     # update the 'sale_price' and verify the 'on_sale' is set to True
     sale_price = float(regular_price) * .75
     payload = {'sale_price': str(sale_price)}
     product_helper.update_product(product_id=product_id, payload=payload)
     product_after_update = product_helper.retrieve_product(product_id)
-    assert product_after_update['on_sale'], f"'on_sale' did not set to 'True' for Product id: {product_id}"
+    assert product_after_update['on_sale'], \
+        f"'on_sale' did not set to 'True' for Product id: {product_id}"
 
     # update the sale_price to empty string and verify the 'on_sale is set to False
     payload = {'sale_price': ''}
     product_helper.update_product(product_id=product_id, payload=payload)
     product_after_update = product_helper.retrieve_product(product_id=product_id)
-    assert not product_after_update['on_sale'], f"'on_sale' did not set to 'False' for Product id: {product_id}"
+    assert not product_after_update['on_sale'], \
+        f"'on_sale' did not set to 'False' for Product id: {product_id}"
 
     # assert that name of the product matches between api and db
     product_dao = ProductsDAO()
@@ -221,7 +239,8 @@ def test_product_categories_validate_in_db():
     categories_list_db = [c['term_taxonomy_id'] for c in product_data_db]
 
     match_list = [id for id in categories_list_api if id in categories_list_db]
-    assert len(match_list) >= 1, f"There should be at least one category matches between api and db data for a product"
+    assert len(match_list) >= 1, \
+        f"There should be at least one category matches between api and db data for a product"
 
 
 @pytest.mark.skip

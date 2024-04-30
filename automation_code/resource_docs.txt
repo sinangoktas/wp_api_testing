@@ -14,10 +14,6 @@ Cleanup is where the test picks up after itself, so other tests aren’t being a
 
 ==================
 
-IMPL DOCKERIZATION
-IMPL DISABLE DB VALIDATIONS FOR DOCKER RUN
-IMPL PYTEST REPORTING - EXTRACT FROM DOCKER
-
 IMPL LOCUST PERFORMANCE EVAL
 
 https://docs.pytest.org/en/7.1.x/how-to/index.html

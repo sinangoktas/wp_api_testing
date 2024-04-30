@@ -121,8 +121,11 @@ def test_update_order_status_to_an_invalid_value():
     payload = {"status": new_status}
     res_api = order_helper.update_order(order_id, payload=payload, expected_status_code=400)
 
-    assert res_api['code'] == 'rest_invalid_param', f"Code >>> Expected: 'rest_invalid_param' Actual: {res_api['code']}"
-    assert res_api['message'] == 'Invalid parameter(s): status', f"Message >>> Expected: 'rest_invalid_param' Actual: {res_api['message']}"
+    assert res_api['code'] == 'rest_invalid_param', \
+        f"Code >>> Expected: 'rest_invalid_param' Actual: {res_api['code']}"
+
+    assert res_api['message'] == 'Invalid parameter(s): status', \
+        f"Message >>> Expected: 'rest_invalid_param' Actual: {res_api['message']}"
 
 @pytest.mark.regression
 def test_update_order_customer_note():
@@ -139,8 +142,8 @@ def test_update_order_customer_note():
 
     # # verify the note in the order info api
     new_order_info = order_helper.retrieve_order(order_id)
-    assert new_order_info['customer_note'] == rand_string, f"Customer note >>>  Expected: {rand_string}, \
-                                                                                Actual: {new_order_info['customer_note']}"
+    assert new_order_info['customer_note'] == rand_string, \
+        f"Customer note >>>  Expected: {rand_string}, Actual: {new_order_info['customer_note']}"
 
 @pytest.mark.regression
 def test_apply_valid_coupon_to_order(my_coupon_setup):
@@ -150,11 +153,13 @@ def test_apply_valid_coupon_to_order(my_coupon_setup):
 
     # create payload and make call to create order
     order_helper = OrdersHelper()
+
     order_payload_addition = {
         "line_items": [{"product_id": my_coupon_setup['product_id'], "quantity": 1}],
         "coupon_lines": [{"code": my_coupon_setup['coupon_code']}],
         "shipping_lines": [{"method_id": "flat_rate", "method_title": "Flat Rate", "total": "0.00"}]
     }
+
     template_order = order_helper.create_order_payload()
     payload = dict()
     payload.update(template_order)
@@ -169,7 +174,8 @@ def test_apply_valid_coupon_to_order(my_coupon_setup):
     total = round(float(res_order['total']), 2)
     expected_total = round(expected_total, 2)
 
-    assert total == expected_total, f"Order total after applying coupon >>> Expected cost: {expected_total}, Actual: {total}"
+    assert total == expected_total, \
+        f"Order total after applying coupon >>> Expected cost: {expected_total}, Actual: {total}"
 
 @pytest.mark.regression
 def test_create_order_with_invalid_email(my_orders_smoke_setup):
@@ -196,16 +202,18 @@ def test_create_order_with_invalid_email(my_orders_smoke_setup):
     res_api = order_helper.create_order(payload=payload, expected_status_code=400)
 
 
-    assert res_api['code'] == "rest_invalid_param", f"Response code >>> Expected: rest_invalid_param, " \
-                                                    f"Actual: {res_api['code']}"
-    assert res_api['message'] == "Invalid parameter(s): billing", f"Response message >>> Expected: Invalid parameter(s): billing, " \
-                                                                  f"Actual: {res_api['message']}"
+    assert res_api['code'] == "rest_invalid_param", \
+        f"Response code >>> Expected: rest_invalid_param, Actual: {res_api['code']}"
+
+    assert res_api['message'] == "Invalid parameter(s): billing", \
+        f"Response message >>> Expected: Invalid parameter(s): billing, Actual: {res_api['message']}"
 
     # assert no change registered in db for the sales count
     product_dao = ProductsDAO()
     table_data = product_dao.get_product_table_data("wc_product_meta_lookup", "product_id", product_id)
     sales_count_after = table_data[0]['total_sales']
-    assert sales_count_before == sales_count_after, f"sales_count should not have changed"
+    assert sales_count_before == sales_count_after, \
+        f"sales_count should not have changed"
 
 
 @pytest.mark.skip
