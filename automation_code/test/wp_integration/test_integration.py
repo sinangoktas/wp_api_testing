@@ -6,9 +6,9 @@ from automation_code.src.utilities.generic_utility import generate_random_string
 from automation_code.src.dao.orders_dao import OrdersDAO
 from automation_code.src.helpers.orders_helper import OrdersHelper
 
-def test_create_product_add_to_order():
+def test_create_a_product_add_it_to_an_order():
     """
-    Create a new product, add it to an order, and verify that the order contains the correct product information.
+    1. Create a new product, add it to an order, and verify that the order contains the correct product information.
     """
 
     # Create a new product
