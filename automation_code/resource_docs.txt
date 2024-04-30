@@ -13,16 +13,13 @@ Cleanup is where the test picks up after itself, so other tests aren’t being a
 
 
 ==================
-IMPL SESSION FIXTURES
-IMPR PARAMETERIZATION
-MARKING,SKIP AND XFAIL
+
+IMPL LOCUST PERFORMANCE EVAL
 
 IMPL DOCKERIZATION
 IMPL DISABLE DB VALIDATIONS FOR DOCKER RUN
 IMPL PYTEST REPORTING - EXTRACT FROM DOCKER
 
-IMPL INTEGRATION SCENARIOS
-IMPL LOCUST PERFORMANCE EVAL
 
 https://docs.pytest.org/en/7.1.x/how-to/index.html
 
@@ -36,6 +33,8 @@ RUN THE WP APP
 # Swagger ui can be opened from wp admin ui
 # https://woocommerce.github.io/woocommerce-rest-api-docs/
 ===========================================
+
+IMPL THE INTEGRATION SCENARIOS
 
 
 
