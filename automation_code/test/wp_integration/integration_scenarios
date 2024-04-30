@@ -3,16 +3,19 @@
 INTEGRATION SCENARIOS:  WITHOUT DB VALIDATION
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-Create a new product, add it to an order, and verify that the order contains the correct product information.
-Create a new customer, place an order on their behalf, and verify that the order is associated with the correct customer.
-Add a product to the shopping cart, create a new customer, and verify that the shopping cart is associated with the correct customer.
-Add a product to the shopping cart, update the product details, and verify that the updated product details are reflected in the shopping cart.
-Create a new order with multiple products, update the details of one of the products, and verify that the updated product details are reflected in the order.
-Create a new order, add a new customer to the order, and verify that the customer information is correctly associated with the order.
-Create a new product, add it to an order, and then delete the product. Verify that the product is no longer associated with the order.
-Create a new customer, add multiple products to the shopping cart, and then place an order. Verify that the order contains all of the products in the shopping cart and is associated with the correct customer.
-Add a product to the shopping cart, create a new customer, and then delete the customer. Verify that the shopping cart is no longer associated with the deleted customer.
-Add a product to the shopping cart, update the product details, and then delete the product. Verify that the shopping cart is no longer associated with the deleted product.
+2. Create a new customer, place an order on their behalf, and verify that the order is associated with the correct customer.
+3. Add a product to the shopping cart, create a new customer, and verify that the shopping cart is associated with the correct customer.
+4. Add a product to the shopping cart, update the product details, and verify that the updated product details are reflected in the shopping cart.
+5. Create a new order with multiple products, update the details of one of the products, and verify that the updated product details are reflected in
+the order.
+6. Create a new order, add a new customer to the order, and verify that the customer information is correctly associated with the order.
+7. Create a new product, add it to an order, and then delete the product. Verify that the product is no longer associated with the order.
+8. Create a new customer, add multiple products to the shopping cart, and then place an order. Verify that the order contains all of the products in
+the shopping cart and is associated with the correct customer.
+9. Add a product to the shopping cart, create a new customer, and then delete the customer. Verify that the shopping cart is no longer associated with
+ the deleted customer.
+10. Add a product to the shopping cart, update the product details, and then delete the product. Verify that the shopping cart is no longer associated
+ with the deleted product.
 
 
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

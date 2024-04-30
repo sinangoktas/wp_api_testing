@@ -45,10 +45,14 @@ def test_create_coupon_percent_discount_type(my_setup, discount_type):
     res_coupon_retrieve = coupon_helper.retrieve_coupon(coupon_id)
 
     # verify that in api response
-    assert res_coupon_retrieve['amount'] == pct_off, f"Amount > Expected: {pct_off}, Actual: {res_coupon_retrieve['amount']}."
-    assert res_coupon_retrieve['code'] == coupon_code.lower(), f"Code > Expected: {coupon_code.lower()}, Actual: {res_coupon_retrieve['code']}."
-    assert res_coupon_retrieve['discount_type'] == expected_discount_type, f"Discount type > Expected: {expected_discount_type}, ,\
-                                                                Actual: {res_coupon_retrieve['discount_type']}."
+    assert res_coupon_retrieve['amount'] == pct_off, \
+        f"Amount -> Expected: {pct_off}, Actual: {res_coupon_retrieve['amount']}."
+
+    assert res_coupon_retrieve['code'] == coupon_code.lower(), \
+        f"Code -> Expected: {coupon_code.lower()}, Actual: {res_coupon_retrieve['code']}."
+
+    assert res_coupon_retrieve['discount_type'] == expected_discount_type, \
+        f"Discount Type -> Expected: {expected_discount_type} Actual: {res_coupon_retrieve['discount_type']}."
 
 
 @pytest.mark.tcid_c5
@@ -67,5 +71,8 @@ def test_create_coupon_with_invalid_discount_type():
     payload['discount_type'] = generate_random_string()
     res_coupon = RequestsUtility().post('coupons', payload=payload, expected_status_code=400)
 
-    assert res_coupon['code'] == 'rest_invalid_param', f"Code > Actual: {res_coupon['code']}', Expected: 'rest_invalid_param' "
-    assert res_coupon['message'] == 'Invalid parameter(s): discount_type', f"Message > Actual: {res_coupon['message']}', Expected: 'Invalid parameter(s): discount_type',"
+    assert res_coupon['code'] == 'rest_invalid_param', \
+        f"Code > Actual: {res_coupon['code']}', Expected: 'rest_invalid_param' "
+
+    assert res_coupon['message'] == 'Invalid parameter(s): discount_type', \
+        f"Message > Actual: {res_coupon['message']}', Expected: 'Invalid parameter(s): discount_type',"

@@ -1,5 +1,4 @@
 import pdb
-
 import pytest
 
 from automation_code.src.helpers.products_helper import ProductsHelper
@@ -7,8 +6,6 @@ from automation_code.src.utilities.generic_utility import generate_random_string
 from automation_code.src.dao.orders_dao import OrdersDAO
 from automation_code.src.helpers.orders_helper import OrdersHelper
 
-
-@pytest.mark.sg112
 def test_create_product_add_to_order():
     """
     Create a new product, add it to an order, and verify that the order contains the correct product information.
