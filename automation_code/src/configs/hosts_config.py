@@ -27,24 +27,24 @@ DB_HOST = {
                   "port": 3306
               }
             },
-    'machine2': {
-              "test": {"host": "localhost",
+    'docker': {
+              "test": {"host": "host.docker.internal",
                        "database": "local",
                        "table_prefix": "wp",
-                       "socket": "/home/sinangoktas/.config/Local/run/R6sTeUhet/mysql/mysqld.sock",
+                       "socket": None,
                        "port": 3306
                        },
               "dev": {
                   "host": "",
                   "database": "",
-                  "table_prefix": "",
+                  "table_prefix": "wp",
                   "socket": None,
                   "port": 3306
               },
               "prod": {
                   "host": "",
                   "database": "",
-                  "table_prefix": "",
+                  "table_prefix": "wp",
                   "socket": None,
                   "port": 3306
               }

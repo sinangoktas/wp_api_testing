@@ -10,7 +10,7 @@ pytestmark = [pytest.mark.regression, pytest.mark.coupons]
 
 @pytest.mark.parametrize("discount_type",
                          [
-                             pytest.param(None, marks=[pytest.mark.tcid_c1, pytest.mark.smoke]),
+                             pytest.param(None, marks=[pytest.mark.tcid_c1, pytest.mark.regression]),
                              pytest.param('percent', marks=[pytest.mark.tcid_c2]),
                              pytest.param('fixed_product', marks=[pytest.mark.tcid_c3]),
                              pytest.param('fixed_cart', marks=[pytest.mark.tcid_c4]),

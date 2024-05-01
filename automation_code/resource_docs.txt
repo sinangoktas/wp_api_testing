@@ -10,26 +10,24 @@ Assert is where we look at that resulting state and check if it looks how we’d
 
 Cleanup
 Cleanup is where the test picks up after itself, so other tests aren’t being accidentally influenced by it.
-
-
 ==================
 
+IMPL A COUPLE OF INTEGRATION SCENARIOS
+IMPL DOCKERIZATION & REPORT EXTRACTION
 IMPL LOCUST PERFORMANCE EVAL
-
-https://docs.pytest.org/en/7.1.x/how-to/index.html
-
-
+README.MD - BEAUTIFY&PUSH
 ============================
-RUN THE WP APP
 
 # run Local, open admin and shop
 # run mysql db (root, root)
 # http://wordpress.local/rest-api/docs/#/
 # Swagger ui can be opened from wp admin ui
 # https://woocommerce.github.io/woocommerce-rest-api-docs/
+
+https://docs.pytest.org/en/7.1.x/how-to/index.html
 ===========================================
 
-IMPL THE INTEGRATION SCENARIOS
+IMPL NTEGRATION SCENARIOS
 
 
 

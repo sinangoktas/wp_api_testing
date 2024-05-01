@@ -5,11 +5,12 @@ from automation_code.src.helpers.products_helper import ProductsHelper
 from automation_code.src.utilities.generic_utility import generate_random_string
 from automation_code.src.dao.orders_dao import OrdersDAO
 from automation_code.src.helpers.orders_helper import OrdersHelper
+from automation_code.src.helpers.customers_helper import CustomerHelper
+from automation_code.src.utilities import generic_utility
 
+@pytest.mark.integration
+@pytest.mark.regression
 def test_create_a_product_add_it_to_an_order():
-    """
-    1. Create a new product, add it to an order, and verify that the order contains the correct product information.
-    """
 
     # Create a new product
     product_helper = ProductsHelper()
@@ -42,3 +43,32 @@ def test_create_a_product_add_it_to_an_order():
     order_with_product = order_helper.retrieve_order(order_id)
     products_list = [(item["product_id"], item["name"]) for item in order_with_product["line_items"]]
     assert product_id, product_info["name"] in products_list
+
+
+@pytest.mark.integration
+@pytest.mark.regression
+def test_create_paid_order_registered_customer(my_orders_smoke_setup):
+    # create helper objects
+    order_helper = my_orders_smoke_setup['order_helper']
+    customer_helper = CustomerHelper()
+
+    # prepare for the order: customer and product
+    user_data = generic_utility.generate_random_email_and_password()
+    cust_info = customer_helper.create_customer(payload=user_data)
+    customer_id = cust_info['id']
+    product_id = my_orders_smoke_setup['product_id']
+
+    info = {"line_items": [
+        {
+            "product_id": product_id,
+            "quantity": 1
+        }
+    ],
+        "customer_id": customer_id
+    }
+    template_order = order_helper.create_order_payload(additional_args=info)
+    order_json = order_helper.create_order(payload=template_order)
+
+    # # verify response
+    expected_products = [{'product_id': product_id}]
+    order_helper.verify_order_is_created(order_json, customer_id, expected_products)

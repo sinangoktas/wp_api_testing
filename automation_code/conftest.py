@@ -1,6 +1,7 @@
 import pytest
 import requests
 from requests_oauthlib import OAuth1
+import random
 
 from automation_code.src.dao.products_dao import ProductsDAO
 from automation_code.src.helpers.orders_helper import OrdersHelper

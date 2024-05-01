@@ -37,33 +37,7 @@ def test_create_paid_order_guest_user(my_orders_smoke_setup):
     order_helper.verify_order_is_created(order_json, customer_id, expected_products)
 
 
-@pytest.mark.smoke
-def test_create_paid_order_registered_customer(my_orders_smoke_setup):
-    # create helper objects
-    order_helper = my_orders_smoke_setup['order_helper']
-    customer_helper = CustomerHelper()
-
-    # prepare for the order: customer and product
-    user_data = generic_utility.generate_random_email_and_password()
-    cust_info = customer_helper.create_customer(payload=user_data)
-    customer_id = cust_info['id']
-    product_id = my_orders_smoke_setup['product_id']
-
-    info = {"line_items": [
-        {
-            "product_id": product_id,
-            "quantity": 1
-        }
-    ],
-        "customer_id": customer_id
-    }
-    template_order = order_helper.create_order_payload(additional_args=info)
-    order_json = order_helper.create_order(payload=template_order)
-
-    # # verify response
-    expected_products = [{'product_id': product_id}]
-    order_helper.verify_order_is_created(order_json, customer_id, expected_products)
-
+@pytest.mark.regression
 @pytest.mark.parametrize("new_status",
                          [
                              pytest.param('cancelled', marks=[pytest.mark.tcid_u1, pytest.mark.regression]),
@@ -127,6 +101,7 @@ def test_update_order_status_to_an_invalid_value():
     assert res_api['message'] == 'Invalid parameter(s): status', \
         f"Message >>> Expected: 'rest_invalid_param' Actual: {res_api['message']}"
 
+
 @pytest.mark.regression
 def test_update_order_customer_note():
     # create a new order
@@ -144,6 +119,7 @@ def test_update_order_customer_note():
     new_order_info = order_helper.retrieve_order(order_id)
     assert new_order_info['customer_note'] == rand_string, \
         f"Customer note >>>  Expected: {rand_string}, Actual: {new_order_info['customer_note']}"
+
 
 @pytest.mark.regression
 def test_apply_valid_coupon_to_order(my_coupon_setup):
@@ -176,6 +152,7 @@ def test_apply_valid_coupon_to_order(my_coupon_setup):
 
     assert total == expected_total, \
         f"Order total after applying coupon >>> Expected cost: {expected_total}, Actual: {total}"
+
 
 @pytest.mark.regression
 def test_create_order_with_invalid_email(my_orders_smoke_setup):

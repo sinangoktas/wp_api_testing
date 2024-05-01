@@ -34,7 +34,7 @@ def test_get_product_by_id():
     assert db_name == api_name, f" Product Id: {rand_product_id} >>> Db name: {db_name}, Api name: {api_name}"
 
 
-@pytest.mark.smoke
+@pytest.mark.regression
 def test_create_a_simple_product():
     additional_args = {"name": generate_random_string(10),
                        "type": "simple",
@@ -134,6 +134,7 @@ def test_update_regular_price_should_update_price():
     assert rs_product['regular_price'] == new_price, \
         f"'regular_price' > Actual: ={rs_product['price']}, Expected: {new_price}"
 
+
 @pytest.mark.regression
 def test_adding_sale_price_should_set_on_sale_flag_true():
     """
@@ -220,6 +221,7 @@ def test_update_on_sale_field_by_updating_sale_price():
     product_name_db = product_dao.get_product_table_data("posts", "ID", product_id)[0]['post_title']
 
     assert product_name_api == product_name_db
+
 
 @pytest.mark.regression
 def test_product_categories_validate_in_db():

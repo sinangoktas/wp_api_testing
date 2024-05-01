@@ -20,7 +20,7 @@ def test_retrieve_all_customers():
     assert res_api, f"Response of list all customers is empty."
 
 
-@pytest.mark.smoke
+@pytest.mark.regression
 def test_create_customer_only_email_password():
     # if you want to log a test description
     logger.info("TEST: Create new customer with email and password only.")
