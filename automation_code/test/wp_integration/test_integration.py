@@ -7,6 +7,7 @@ from automation_code.src.dao.orders_dao import OrdersDAO
 from automation_code.src.helpers.orders_helper import OrdersHelper
 from automation_code.src.helpers.customers_helper import CustomerHelper
 from automation_code.src.utilities import generic_utility
+from automation_code.src.dao.products_dao import ProductsDAO
 
 @pytest.mark.integration
 @pytest.mark.regression
@@ -72,3 +73,55 @@ def test_create_paid_order_registered_customer(my_orders_smoke_setup):
     # # verify response
     expected_products = [{'product_id': product_id}]
     order_helper.verify_order_is_created(order_json, customer_id, expected_products)
+
+
+@pytest.mark.integration
+@pytest.mark.sg112
+def test_order_with_products_update_product():
+    # create helper objects
+    order_helper = OrdersHelper()
+    product_helper = ProductsHelper()
+    product_dao = ProductsDAO()
+
+    random_products = product_dao.get_random_product_from_db("posts", qty=2)
+    product_id_one = random_products[0]['ID']
+    product_id_two = random_products[1]['ID']
+
+    # Create an order with multiple products
+    info = {"line_items": [
+        {
+            "product_id": product_id_one,
+            "quantity": 1
+        },
+        {
+            "product_id": product_id_two,
+            "quantity": 1
+        }
+    ]}
+    template_order = order_helper.create_order_payload(additional_args=info)
+    order_json = order_helper.create_order(payload=template_order)
+    order_id = order_json["id"]
+
+    # update the details of one of the products in the order
+    products_on_order = order_json["line_items"]
+    product_to_update = [p for p in products_on_order if p["product_id"] == product_id_one]
+    line_id = product_to_update[0]["id"]
+    update_payload = {"line_items": [
+        {
+            "id": line_id,
+            "quantity": 5
+        }
+    ]}
+
+    order_helper.update_order(order_id, payload=update_payload)
+
+    # verify updated product details on the order
+    order_after_update = order_helper.retrieve_order(order_id)
+    products_on_order = order_after_update["line_items"]
+    updated_product = [d for d in products_on_order if d["id"] == line_id]
+
+    found = False
+    for product in updated_product:
+        if product["quantity"] == 5:
+            found = True
+    assert found, "product update on order is not successful"
