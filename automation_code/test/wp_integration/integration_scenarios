@@ -1,13 +1,4 @@
 
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-INTEGRATION SCENARIOS:  WITHOUT DB VALIDATION
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-5. Create a new order with multiple products, update the details of one of the products, and verify that the updated product details are reflected in
-the order.
-6. Create a new order, add a new customer to the order, and verify that the customer information is correctly associated with the order.
-7. Create a new product, add it to an order, and then delete the product. Verify that the product is no longer associated with the order.
-
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 INTEGRATION SCENARIOS:  WITH DB VALIDATION
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
