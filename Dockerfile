@@ -1,9 +1,5 @@
-# Can not connect to db (Local's in-build mysql) from docker
-# Therefore dockerizing this app for now is on hold
+# Can not connect to db -which is Local's in-build mysql- from docker
 FROM python:latest
-
-# TODO re-attempt dockerizing (Run only non-db integration Scenarios)
-# Because looks like we can not talk to Local's db from inside a container
 
 MAINTAINER sinang@somemail.com
 
