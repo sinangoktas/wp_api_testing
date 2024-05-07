@@ -21,8 +21,8 @@ class RequestsUtility(object):
         self.env = os.environ.get('ENV', 'test')
         self.base_url = API_HOSTS[self.env]
 
-        wc_creds = CredentialsUtility.get_wc_api_keys()
-        self.auth = OAuth1(wc_creds['wc_key'], wc_creds['wc_secret'])
+        self.wc_creds = CredentialsUtility.get_wc_api_keys()
+        self.auth = OAuth1(self.wc_creds['wc_key'], self.wc_creds['wc_secret'])
 
     def assert_status_code(self):
         assert self.status_code == self.expected_status_code, f"Bad Status code." \

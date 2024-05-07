@@ -12,7 +12,6 @@ Cleanup
 Cleanup is where the test picks up after itself, so other tests aren’t being accidentally influenced by it.
 ==================
 
-IMPL LOCUST PERFORMANCE EVAL
 README.MD - BEAUTIFY&PUSH
 ============================
 
