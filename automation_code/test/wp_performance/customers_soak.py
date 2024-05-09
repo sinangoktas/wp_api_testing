@@ -13,7 +13,6 @@ class WebsiteUser(HttpUser):
     req = RequestsUtility()
     wc_creds = req.wc_creds
     host = req.base_url
-    # oauth_session = None
 
     def on_start(self):
         """ Set up OAuth1 authentication """
@@ -44,8 +43,8 @@ class WebsiteUser(HttpUser):
     @task
     def read_customer(self):
         try:
-
-            response = self.client.get(f"{self.req.base_url}customers", auth=self.auth)
+            customers_url = self.req.base_url + "customers"
+            response = self.client.get(url=customers_url, auth=self.auth)
             print("Response status code:", response.status_code)
         except Exception as e:
             print(f"An error occurred: {e}")
