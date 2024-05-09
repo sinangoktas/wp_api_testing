@@ -10,9 +10,6 @@ Assert is where we look at that resulting state and check if it looks how we’d
 
 Cleanup
 Cleanup is where the test picks up after itself, so other tests aren’t being accidentally influenced by it.
-==================
-
-README.MD - BEAUTIFY&PUSH
 ============================
 
 # run Local, open admin and shop
@@ -24,7 +21,7 @@ README.MD - BEAUTIFY&PUSH
 https://docs.pytest.org/en/7.1.x/how-to/index.html
 ===========================================
 
-IMPL NTEGRATION SCENARIOS
+IMPL THE INTEGRATION SCENARIOS
 
 
 

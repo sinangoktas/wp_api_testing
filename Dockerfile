@@ -1,4 +1,4 @@
-# Can not connect to db -which is Local's in-build mysql- from docker
+# Can not connect to db - which is Local's in-build mysql - from docker
 FROM python:latest
 
 MAINTAINER sinang@somemail.com
